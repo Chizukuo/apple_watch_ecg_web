@@ -1,0 +1,10 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: document-domain=(), geolocation=(), camera=(), microphone=()
+
+/api/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS
+  Access-Control-Allow-Headers: Content-Type, Content-Length
