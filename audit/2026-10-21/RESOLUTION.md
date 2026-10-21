@@ -70,3 +70,5 @@ HTTP 对照需要同级 Python 基准仓库或 `APPLE_WATCH_ECG_PY_DIR`，依赖
 - 补充诊断：15 类原始波形的基准字段相等，4 个 PDF 内容流变体均得到 15,175 点；滤波差异约 4.2e-13，偶数最大值窗口不一致数为 0。详见 verification.json。
 
 远程验证以本次推送提交的 [CI 检查](https://github.com/Chizukuo/apple_watch_ecg_web/actions/workflows/ci.yml) 为准，覆盖 Ubuntu/Node 22 与 Windows/Node 24。实际 iPhone、Safari、相册快捷指令和纸面量尺保持为明确的验证边界，不以模拟视口替代实机证明。
+
+CI 工具链进一步固定到官方 Actions v7 的提交 SHA（Node 24 运行时），并为 Linux 原版图表测试安装 Noto CJK 字体；避免旧 Action 运行时弃用和中文缺字告警。工作流仅授予 contents:read。
