@@ -23,7 +23,7 @@
 | F15 | README 示例使用 morphology_alerts.alerts、状态码和 nullable 检查 | README Python 示例端到端执行 |
 | F16 | JSON 保留 tool_version/source，明确 schema、覆盖范围和 summary，SVG 可省略 | API 单元与 HTTP |
 | F17 | 清除硬编码私人路径、姓名、生日；可选真实输入改用环境变量 | 源码检查；默认跳过可选测试，合成身份独立验证 |
-| F18 | 保留有坐标的自动缩放图；增加有毫米尺寸、方波和小网格的定标模式；打印只输出看板并明确原始尺寸要求 | 浏览器验证定标 SVG 的物理 CSS 宽度与打印隐藏；SVG/PNG 导出 |
+| F18 | 保留有坐标的自动缩放图；增加有毫米尺寸、方波和小网格的定标模式；打印只输出看板并明确原始尺寸要求 | 浏览器验证定标 SVG 的物理 CSS 宽度、打印隐藏及两种模式实际生成单页 A4 PDF；SVG/PNG 导出 |
 | F19 | exported_at 为 UTC ISO，明确其与本机时区 Python 展示的格式差异 | 元数据实现及 README 契约 |
 | F20 | 400/413/422/500 分类，内部错误不透传详情，所有分析错误 no-store | 非法表单、非法参数、超限、格式回归 |
 | F21 | 0 与 null 分开，RMSSD=0 正常显示 | 页面函数修改及浏览器流程 |
@@ -38,7 +38,7 @@
 - 单元回归包括 PDF 引用结构、隐私、状态解释、错误参数、数值库、边界及资源限制。
 - HTTP 套件包含原有 18 类合成节律场景，新增 19 类形态/参数组合、排除与 CSV、3 种光栅来源、错误请求和 README 示例。可选私人记录默认跳过。
 - 矢量形态用例对照样本数量、rhythm、hrv、morphology、beats、quality 和 summary，不只比较平均心率。滤波器夹具来自 Python 库，保留生成版本。
-- Playwright 验证 Chromium 桌面及手机尺寸下的上传、主题、示例、分析选项、身份开关、全部导出、批量汇总与定标打印 CSS 尺寸。
+- Playwright 验证 Chromium 桌面及手机尺寸下的上传、主题、示例、分析选项、身份开关、全部导出、批量汇总、定标打印 CSS 尺寸及默认/定标两种模式实际生成单页 A4 PDF。
 - 原版 Python 也重新执行其全部公开测试。依赖审计以当前 lockfile 为准，历史审计 JSON 留作证据。
 
 最终实际运行结果与推送提交见本文件末尾的验收记录。未做真实 iPhone/Safari、快捷指令安装、实物量尺及 Web 独立 MIT-BIH 全集验证；这些不冒充已通过。生产负载、Cloudflare 配额及日志配置仍由部署者管理。
@@ -65,7 +65,7 @@ HTTP 对照需要同级 Python 基准仓库或 `APPLE_WATCH_ECG_PY_DIR`，依赖
 - TypeScript：58 passed，1 个可选真实 PDF 测试跳过。
 - HTTP 独立服务对照：43 passed，1 个可选私人记录跳过；包含实际执行 README 示例。
 - Python 原版：72 passed，1 个本地私人数据测试跳过。
-- Chromium 桌面/手机尺寸：6 passed，含全部导出、批量重名后缀、summary 与定标打印宽度。
+- Chromium 桌面/手机尺寸：6 passed，含全部导出、批量重名后缀、summary、定标打印宽度及两种模式实际生成单页 A4 PDF。
 - npm audit：0 项已知告警（含开发依赖）。
 - 补充诊断：15 类原始波形的基准字段相等，4 个 PDF 内容流变体均得到 15,175 点；滤波差异约 4.2e-13，偶数最大值窗口不一致数为 0。详见 verification.json。
 

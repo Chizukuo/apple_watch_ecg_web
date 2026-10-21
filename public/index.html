@@ -694,10 +694,10 @@
     /* Print Stylesheet */
     @page { size: A4 landscape; margin: 7mm; }
     @media print {
-      body { margin:0; background:#fff !important; }
+      html, body { margin:0; padding:0; min-height:0; height:auto; display:block; background:#fff !important; }
       body > :not(#print-output) { display:none !important; }
-      #print-output { display:block; }
-      #print-output svg { width:100%; height:auto; }
+      #print-output { display:block; margin:0; padding:0; }
+      #print-output svg { display:block; width:268.8172043mm; max-width:100%; height:auto; }
       #print-output svg[data-calibrated=true] { width:268.8172043mm; max-width:none; height:auto; }
     }
 

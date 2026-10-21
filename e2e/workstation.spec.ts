@@ -1,6 +1,7 @@
 /** Copyright (C) 2026 Chizukuo. SPDX-License-Identifier: GPL-3.0-or-later */
 import { test, expect } from "@playwright/test";
 import fs from "node:fs/promises";
+import { PDFDocument } from "pdf-lib";
 
 test("uploads, evaluates and exports without script errors or default identity", async ({
   page,
@@ -56,6 +57,11 @@ test("uploads, evaluates and exports without script errors or default identity",
       expect(bytes.readUInt32BE(20)).toBeGreaterThan(1000);
     }
   }
+  const printed = await PDFDocument.load(
+    await page.pdf({ preferCSSPageSize: true, printBackground: true }),
+  );
+  expect(printed.getPageCount()).toBe(1);
+  expect(printed.getPage(0).getWidth()).toBeCloseTo(841.92, 0);
   expect(errors).toEqual([]);
   await page.screenshot({
     path: test.info().outputPath("workstation.png"),
@@ -106,4 +112,9 @@ test("batch selection exports an ordered summary and calibrated mode preserves p
     .locator("#print-output svg")
     .evaluate((el) => el.getBoundingClientRect().width);
   expect(width).toBeCloseTo((268.8172043 * 96) / 25.4, 0);
+  const printed = await PDFDocument.load(
+    await page.pdf({ preferCSSPageSize: true, printBackground: true }),
+  );
+  expect(printed.getPageCount()).toBe(1);
+  expect(printed.getPage(0).getWidth()).toBeCloseTo(841.92, 0);
 });
