@@ -36,7 +36,7 @@ QTc 单元使用后端实际选择的公式：心率 >100 使用 Fridericia，�
 
 ### iOS 快捷指令
 
-[获取快捷指令](https://www.icloud.com/shortcuts/1eac247c7d264fc591c4db4239875277)。在健康 App 分享 ECG PDF 后，通过快捷指令 POST 至 `/api/analyze?format=svg` 可获取看板。相册保存、显示和文件归档由快捷指令流程决定；仓库不包含该外链流程的可审查源码，也不承诺所有 iOS 版本自动保存图片。API 也支持其他自动化客户端。
+[获取快捷指令](https://www.icloud.com/shortcuts/1eac247c7d264fc591c4db4239875277)。在健康 App 分享 ECG PDF 后，快捷指令以文件正文 POST 至 `/api/analyze?format=svg`，再通过“快速查看”预览返回的 SVG。已核对 2026-10-21 的公开流程，只有这两步，不包含自动存相册动作；可审查的 [动作定义与性能说明](shortcuts/README.md) 已收入仓库。现有快捷指令 URL 无需修改，服务更新后即可使用优化。API 也支持其他自动化客户端。
 
 ## API
 

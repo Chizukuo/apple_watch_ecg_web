@@ -12,5 +12,11 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["src/**/*", "functions/**/*", "test/**/*.ts"]
+  "include": [
+    "src/**/*",
+    "functions/**/*",
+    "test/**/*.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.mts"
+  ]
 }

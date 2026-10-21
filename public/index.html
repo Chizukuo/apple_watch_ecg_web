@@ -926,7 +926,7 @@
             <span>iOS 快捷指令 · 官方一键安装</span>
           </div>
           <div class="shortcuts-title">联动 iPhone 健康 App 全自动解析心电图</div>
-          <div class="shortcuts-desc">无需手动配置任何网络请求。轻点右侧按钮直接添加官方快捷指令，在 iPhone「健康」App 中查看任意心电图并分享，即可秒级生成高精分析看板并自动存图。</div>
+          <div class="shortcuts-desc">添加快捷指令后，在 iPhone「健康」App 中分享心电图 PDF，即可上传分析并通过“快速查看”预览 SVG 看板。流程只有一次上传请求，无需转换图片。</div>
         </div>
         <div class="shortcuts-cta-area">
           <a href="https://www.icloud.com/shortcuts/1eac247c7d264fc591c4db4239875277" target="_blank" rel="noopener noreferrer" class="btn btn-primary shortcut-install-action">
@@ -949,7 +949,7 @@
         <div class="inst-card">
           <div class="inst-num">STEP 02</div>
           <div class="inst-title">健康 App 分享运行</div>
-          <div class="inst-desc">打开 iPhone「健康」App →「心脏」→「心电图 (ECG)」→ 选择任意记录 → 点击右上角「分享」→ 选择该快捷指令，即可即时弹出全屏高精看板并存入相册。</div>
+          <div class="inst-desc">打开 iPhone「健康」App →「心脏」→「心电图 (ECG)」→ 选择记录并分享 PDF → 选择该快捷指令。分析完成后通过“快速查看”预览看板；公开流程不自动保存到相册。</div>
         </div>
       </div>
 
@@ -960,7 +960,7 @@
           <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" id="copy-btn" onclick="copyApiUrl()">复制地址</button>
         </div>
         <div class="shortcuts-dev-notes">
-          支持参数：<code>?format=svg</code> (默认，直接输出高精矢量波形长图) · <code>?format=json</code> (输出包含患者元数据、心律与形态指标的结构化 JSON)。
+          推荐直接上传 PDF 文件正文至 <code>?format=svg</code>，一次请求返回矢量看板；只需指标时使用 <code>?format=json&amp;include_svg=0</code>。默认不输出身份信息。
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { readDocument } from "./document";
 import { AnalysisError, DEFAULT_FS, Recording } from "../types";
 import { stitch } from "../signal";
 import { extractRaster } from "../raster";
-import { extractText } from "./content";
+import { contentTokens, extractText } from "./content";
 import { extractPaintedPaths } from "./graphics";
 import { parsePdfText } from "./metadata";
 import { extractVectorRows, findGridStrips } from "./vector";
@@ -23,9 +23,13 @@ export * from "./vector";
  */
 export async function parsePdf(pdfBytes: Uint8Array): Promise<Recording> {
   const document = await readDocument(pdfBytes);
-  const vectorStreamStr = document.pages[0].content;
+  // Text and graphics share one lexical pass over the first page. Keep this
+  // request-local; PDF tokens can contain personal information.
+  const firstPageTokens = contentTokens(document.pages[0].content);
   const fullText = document.pages
-    .map((page) => extractText(page.content, page.fonts))
+    .map((page, i) =>
+      extractText(i === 0 ? firstPageTokens : page.content, page.fonts),
+    )
     .join("\n");
 
   // 3. Parse metadata and properties
@@ -48,7 +52,7 @@ export async function parsePdf(pdfBytes: Uint8Array): Promise<Recording> {
 
   // 4. Extract vector drawings and identify grid strips
   const pageHeight = document.pages[0].height;
-  const paintedPaths = extractPaintedPaths(vectorStreamStr, pageHeight);
+  const paintedPaths = extractPaintedPaths(firstPageTokens, pageHeight);
   const strips = findGridStrips(paintedPaths);
 
   // 5. Extract rows and resample

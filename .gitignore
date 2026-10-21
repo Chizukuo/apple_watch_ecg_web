@@ -19,3 +19,5 @@ test-results/
 !test/fixtures/synthetic_demo.pdf
 
 python-reference/
+
+benchmark-results/

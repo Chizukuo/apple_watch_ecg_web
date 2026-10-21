@@ -9,6 +9,29 @@ import {
   utf16beDecoder,
 } from "./encoding";
 
+function whitespace(code: number): boolean {
+  return (
+    code === 0 ||
+    code === 32 ||
+    (code >= 9 && code <= 13) ||
+    (code >= 128 && /\s/.test(String.fromCharCode(code)))
+  );
+}
+
+function boundary(code: number): boolean {
+  return (
+    whitespace(code) ||
+    code === 40 ||
+    code === 41 ||
+    code === 91 ||
+    code === 93 ||
+    code === 60 ||
+    code === 62 ||
+    code === 47 ||
+    code === 37
+  );
+}
+
 /** PDF lexical boundaries: comments and strings must never become drawing operators. */
 export function contentTokens(source: string): string[] {
   const tokens: string[] = [];
@@ -16,9 +39,9 @@ export function contentTokens(source: string): string[] {
   while (i < source.length) {
     const start = i,
       c = source[i++];
-    if (/\s|\0/.test(c)) continue;
+    if (whitespace(c.charCodeAt(0))) continue;
     if (c === "%") {
-      while (i < source.length && !/[\r\n]/.test(source[i])) i++;
+      while (i < source.length && source[i] !== "\r" && source[i] !== "\n") i++;
       continue;
     }
     if (c === "(") {
@@ -43,7 +66,7 @@ export function contentTokens(source: string): string[] {
     )
       i++;
     else if (!"[]<>".includes(c)) {
-      while (i < source.length && !/[\s\0()[\]<>/%]/.test(source[i])) i++;
+      while (i < source.length && !boundary(source.charCodeAt(i))) i++;
     }
     tokens.push(source.slice(start, i));
     if (tokens.length > 1000000)
@@ -52,8 +75,11 @@ export function contentTokens(source: string): string[] {
   return tokens;
 }
 
-export function extractText(source: string, fonts: Map<string, CMap>): string {
-  const tokens = contentTokens(source);
+export function extractText(
+  source: string | readonly string[],
+  fonts: Map<string, CMap>,
+): string {
+  const tokens = typeof source === "string" ? contentTokens(source) : source;
   let font = "",
     y: number | null = null,
     line = "";

@@ -15,6 +15,7 @@ import {
   Recording,
   STRIP_SECONDS,
 } from "../core/types";
+import { polylinePath } from "./path";
 
 export function renderDashboardSvg(
   rec: Recording,
@@ -184,22 +185,17 @@ export function renderDashboardSvg(
 
     // Clipped ECG Waveform
     svg += `    <g clip-path="url(#strip-clip-${k})">\n`;
-    const pathParts: string[] = [];
     let hasClipInRow = false;
     if (startIdx !== -1) {
       for (let i = startIdx; i <= endIdx; i++) {
-        const px = mapStripX(rec.t[i]);
-        const py = mapStripY(rec.v[i]);
-        pathParts.push(
-          i === startIdx
-            ? `M ${px.toFixed(1)} ${py.toFixed(1)}`
-            : ` L ${px.toFixed(1)} ${py.toFixed(1)}`,
-        );
         if (rec.clip[i] === 1) hasClipInRow = true;
       }
-      if (pathParts.length > 0) {
-        svg += `      <path d="${pathParts.join("")}" fill="none" stroke="#c62828" stroke-width="0.9" stroke-linejoin="round"/>\n`;
-      }
+      const path = polylinePath(
+        endIdx - startIdx + 1,
+        (i) => mapStripX(rec.t[startIdx + i]),
+        (i) => mapStripY(rec.v[startIdx + i]),
+      );
+      svg += `      <path d="${path}" fill="none" stroke="#c62828" stroke-width="0.9" stroke-linejoin="round"/>\n`;
     }
 
     // Beat Markers on the wave
@@ -322,30 +318,20 @@ export function renderDashboardSvg(
     // 1. All Single Beats Overlay (light pink)
     for (let r = 0; r < m.W.length; r++) {
       const beatRow = m.W[r];
-      let bPath = "";
-      for (let c = 0; c < beatRow.length; c++) {
-        const tMs = ((c - R) / fs) * 1000;
-        const x = mapTmplX(tMs);
-        const y = mapTmplY(beatRow[c] - m.base);
-        bPath +=
-          c === 0
-            ? `M ${x.toFixed(1)} ${y.toFixed(1)}`
-            : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-      }
+      const bPath = polylinePath(
+        beatRow.length,
+        (c) => mapTmplX(((c - R) / fs) * 1000),
+        (c) => mapTmplY(beatRow[c] - m.base),
+      );
       svg += `    <path d="${bPath}" fill="none" stroke="#f2c4c4" stroke-width="0.5" opacity="0.8"/>\n`;
     }
 
     // 2. Median Template Signal (bold red)
-    let tmplPath = "";
-    for (let c = 0; c < m.sm.length; c++) {
-      const tMs = ((c - R) / fs) * 1000;
-      const x = mapTmplX(tMs);
-      const y = mapTmplY(smSub[c]);
-      tmplPath +=
-        c === 0
-          ? `M ${x.toFixed(1)} ${y.toFixed(1)}`
-          : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
-    }
+    const tmplPath = polylinePath(
+      m.sm.length,
+      (c) => mapTmplX(((c - R) / fs) * 1000),
+      (c) => mapTmplY(smSub[c]),
+    );
     svg += `    <path d="${tmplPath}" fill="none" stroke="#c62828" stroke-width="2.0" stroke-linejoin="round"/>\n`;
 
     // 3. Vertical Fiducial Boundary Lines & Staggered Labels

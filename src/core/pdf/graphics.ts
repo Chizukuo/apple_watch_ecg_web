@@ -63,10 +63,11 @@ export function isRed(c: [number, number, number]): boolean {
  * Extracts vector line segments from raw PDF stream tokens with CTM affine support
  */
 export function extractPaintedPaths(
-  streamStr: string,
+  streamStr: string | readonly string[],
   pageHeight = 612,
 ): PaintedPath[] {
-  const tokens = contentTokens(streamStr);
+  const tokens =
+    typeof streamStr === "string" ? contentTokens(streamStr) : streamStr;
   const paintedPaths: PaintedPath[] = [];
 
   let state: GraphicsState = {

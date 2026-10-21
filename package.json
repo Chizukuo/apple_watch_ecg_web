@@ -10,7 +10,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:integration": "python scripts/run-integration.py",
-    "format:check": "prettier --check src functions test/*.ts e2e public/app.js playwright.config.ts vitest.config.mts"
+    "benchmark:shortcut": "vitest run --config scripts/shortcut-benchmark.config.mts",
+    "format:check": "prettier --check src functions test/*.ts scripts/*.ts scripts/*.mts e2e public/app.js playwright.config.ts vitest.config.mts"
   },
   "keywords": [
     "apple-watch",
