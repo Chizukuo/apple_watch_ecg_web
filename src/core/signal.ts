@@ -4,7 +4,7 @@
  */
 
 import { Row } from "./types";
-import { interp, median } from "./dsp";
+import { interp, median, sampleGrid } from "./dsp";
 
 export interface StitchedSignal {
   t: Float64Array;
@@ -83,15 +83,7 @@ export function stitch(rows: Row[], fs: number): StitchedSignal {
   }
 
   // Uniform grid from tAll[0] to tAll[last] with step 1.0 / fs
-  const dt = 1.0 / fs;
-  const tStart = tAll[0];
-  const tEnd = tAll[tAll.length - 1];
-  const count = Math.floor((tEnd - tStart) / dt);
-
-  const tU = new Float64Array(count);
-  for (let i = 0; i < count; i++) {
-    tU[i] = tStart + i * dt;
-  }
+  const tU = sampleGrid(tAll[0], tAll[tAll.length - 1], fs);
 
   const vInterp = interp(tU, tAll, vAll);
   const vMed = median(vInterp);

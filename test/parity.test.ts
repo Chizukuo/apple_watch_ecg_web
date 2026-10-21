@@ -7,17 +7,23 @@ import { renderDashboardSvg } from "../src/render/svg";
 
 describe("Parity with Python apple_watch_ecg", () => {
   const localPdf = path.resolve(__dirname, "fixtures/synthetic_demo.pdf");
-  const parentPdf = path.resolve(__dirname, "../../apple_watch_ecg/examples/synthetic_demo.pdf");
+  const parentPdf = path.resolve(
+    __dirname,
+    "../../apple_watch_ecg/examples/synthetic_demo.pdf",
+  );
   const pdfPath = fs.existsSync(localPdf) ? localPdf : parentPdf;
 
-  it("extracts metadata and signal accurately from synthetic_demo.pdf", () => {
+  it("extracts metadata and signal accurately from synthetic_demo.pdf", async () => {
     if (!fs.existsSync(pdfPath)) {
-      console.warn("Skipping parity test: synthetic_demo.pdf not found at", pdfPath);
+      console.warn(
+        "Skipping parity test: synthetic_demo.pdf not found at",
+        pdfPath,
+      );
       return;
     }
 
     const pdfBytes = fs.readFileSync(pdfPath);
-    const rec = parsePdf(new Uint8Array(pdfBytes));
+    const rec = await parsePdf(new Uint8Array(pdfBytes));
 
     expect(rec.record_id).toBe("ECG_20261013_1125");
     expect(rec.watch.classification).toBe("窦性心律");
@@ -86,12 +92,15 @@ describe("Parity with Python apple_watch_ecg", () => {
     expect(svg).toContain("QRS 66 ms");
   });
 
-  it.skipIf(!process.env.TEST_REAL_PDF_PATH || !fs.existsSync(process.env.TEST_REAL_PDF_PATH))(
+  it.skipIf(
+    !process.env.TEST_REAL_PDF_PATH ||
+      !fs.existsSync(process.env.TEST_REAL_PDF_PATH),
+  )(
     "extracts and analyzes real iOS Apple Watch PDF when TEST_REAL_PDF_PATH is provided",
-    () => {
+    async () => {
       const realPdfPath = process.env.TEST_REAL_PDF_PATH!;
       const pdfBytes = fs.readFileSync(realPdfPath);
-      const rec = parsePdf(new Uint8Array(pdfBytes));
+      const rec = await parsePdf(new Uint8Array(pdfBytes));
 
       expect(rec.record_id).toMatch(/^ECG_\d{8}_\d{4}$/);
       expect(rec.rows.length).toBeGreaterThanOrEqual(3);
@@ -103,6 +112,6 @@ describe("Parity with Python apple_watch_ecg", () => {
       const svg = renderDashboardSvg(rec, res);
       expect(svg.startsWith("<svg")).toBe(true);
       expect(svg.endsWith("</svg>")).toBe(true);
-    }
+    },
   );
 });

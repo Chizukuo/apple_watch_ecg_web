@@ -64,7 +64,11 @@ export function std(arr: ArrayLike<number>, ddof = 0): number {
  * 1D linear interpolation matching np.interp(x, xp, fp)
  * xp must be monotonically increasing.
  */
-export function interp(x: Float64Array | number[], xp: Float64Array | number[], fp: Float64Array | number[]): Float64Array {
+export function interp(
+  x: Float64Array | number[],
+  xp: Float64Array | number[],
+  fp: Float64Array | number[],
+): Float64Array {
   const n = x.length;
   const m = xp.length;
   const out = new Float64Array(n);
@@ -156,12 +160,12 @@ export function corr(a: Float64Array, b: Float64Array): number {
   for (let i = 0; i < da.length; i++) {
     sumProd += da[i] * db[i];
   }
-  return (sumProd / da.length) / (sa * sb);
+  return sumProd / da.length / (sa * sb);
 }
 
 /**
  * 1D median filter with 'nearest' boundary mode matching scipy.ndimage.median_filter(v, size, mode="nearest")
- * High-performance sliding window with binary search insertion/deletion for O(N log W) complexity.
+ * Sorted sliding window: O(N W) worst case because insertion/deletion shifts array elements.
  */
 export function medianFilter(v: Float64Array, size: number): Float64Array {
   const n = v.length;
@@ -228,7 +232,7 @@ export function maximumFilter1d(d: Float64Array, size: number): Float64Array {
   const half = Math.floor(size / 2);
   for (let i = 0; i < n; i++) {
     const start = Math.max(0, i - half);
-    const end = Math.min(n, i + half + 1);
+    const end = Math.min(n, i + size - half);
     let m = d[start];
     for (let j = start + 1; j < end; j++) {
       if (d[j] > m) m = d[j];
@@ -273,7 +277,11 @@ export function uniformFilter1d(arr: Float64Array, size: number): Float64Array {
 /**
  * Savitzky-Golay filter matching scipy.signal.savgol_filter(arr, windowSize, 3, mode="interp")
  */
-export function savgolFilter(arr: Float64Array, windowSize: number, polyOrder = 3): Float64Array {
+export function savgolFilter(
+  arr: Float64Array,
+  windowSize: number,
+  polyOrder = 3,
+): Float64Array {
   const n = arr.length;
   const out = new Float64Array(n);
   if (n === 0) return out;
@@ -289,7 +297,9 @@ export function savgolFilter(arr: Float64Array, windowSize: number, polyOrder = 
   // Normal equations: (A^T A) C = A^T
   const deg = polyOrder;
   const pCount = deg + 1;
-  const ATA: number[][] = Array.from({ length: pCount }, () => new Array(pCount).fill(0));
+  const ATA: number[][] = Array.from({ length: pCount }, () =>
+    new Array(pCount).fill(0),
+  );
   for (let x = -m; x <= m; x++) {
     for (let r = 0; r < pCount; r++) {
       for (let c = 0; c < pCount; c++) {
@@ -342,7 +352,7 @@ function invertMatrix(M: number[][]): number[][] {
   const n = M.length;
   const A = M.map((row) => row.slice());
   const I: number[][] = Array.from({ length: n }, (_, r) =>
-    Array.from({ length: n }, (_, c) => (r === c ? 1 : 0))
+    Array.from({ length: n }, (_, c) => (r === c ? 1 : 0)),
   );
 
   for (let i = 0; i < n; i++) {
@@ -381,7 +391,9 @@ function invertMatrix(M: number[][]): number[][] {
 function fitPolynomial(y: number[], deg: number): number[] {
   const n = y.length;
   const pCount = deg + 1;
-  const ATA: number[][] = Array.from({ length: pCount }, () => new Array(pCount).fill(0));
+  const ATA: number[][] = Array.from({ length: pCount }, () =>
+    new Array(pCount).fill(0),
+  );
   const ATy: number[] = new Array(pCount).fill(0);
 
   for (let i = 0; i < n; i++) {
@@ -426,87 +438,129 @@ export const BUTTER_5_HIGHPASS_512_SOS: number[][] = [
  * Zero-phase forward-backward SOS filtering matching scipy.signal.sosfiltfilt
  */
 export function sosFiltFilt(sos: number[][], x: Float64Array): Float64Array {
-  const n = x.length;
-  if (n === 0) return new Float64Array(0);
-
-  // Pad length
-  const padLen = Math.min(n - 1, 3 * (2 * sos.length + 1));
-  const totalLen = n + 2 * padLen;
-
-  // Reflected padding matching scipy
-  const y = new Float64Array(totalLen);
-  const x0 = x[0];
-  const xEnd = x[n - 1];
-
-  for (let i = 0; i < padLen; i++) {
-    y[i] = 2 * x0 - x[padLen - i];
-  }
-  y.set(x, padLen);
-  for (let i = 0; i < padLen; i++) {
-    y[padLen + n + i] = 2 * xEnd - x[n - 2 - i];
-  }
-
-  // Forward pass
-  let signal: Float64Array<ArrayBufferLike> = y;
-  for (let s = 0; s < sos.length; s++) {
-    signal = sosFiltSection(sos[s], signal);
-  }
-
-  // Reverse
+  if (x.length === 0) return new Float64Array(0);
+  const ntaps =
+    2 * sos.length +
+    1 -
+    Math.min(
+      sos.filter((s) => s[2] === 0).length,
+      sos.filter((s) => s[5] === 0).length,
+    );
+  const edge = 3 * ntaps;
+  if (x.length <= edge)
+    throw new Error(`Signal must contain more than ${edge} samples`);
+  const padded = new Float64Array(x.length + 2 * edge);
+  for (let i = 0; i < edge; i++) padded[i] = 2 * x[0] - x[edge - i];
+  padded.set(x, edge);
+  for (let i = 0; i < edge; i++)
+    padded[edge + x.length + i] = 2 * x[x.length - 1] - x[x.length - 2 - i];
+  let signal = filterCascade(sos, padded);
   signal.reverse();
-
-  // Backward pass
-  for (let s = 0; s < sos.length; s++) {
-    signal = sosFiltSection(sos[s], signal);
-  }
-
-  // Reverse back
+  signal = filterCascade(sos, signal);
   signal.reverse();
-
-  // Slice unpadded center
-  return signal.subarray(padLen, padLen + n);
+  return signal.slice(edge, edge + x.length);
 }
 
-function sosFiltSection(sec: number[], x: Float64Array): Float64Array {
-  const [b0, b1, b2, a0, a1, a2] = sec;
-  const n = x.length;
-  const y = new Float64Array(n);
-  let x1 = 0;
-  let x2 = 0;
-  let y1 = 0;
-  let y2 = 0;
-
-  for (let i = 0; i < n; i++) {
-    const xi = x[i];
-    const yi = (b0 * xi + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2) / a0;
-    y[i] = yi;
-    x2 = x1;
-    x1 = xi;
-    y2 = y1;
-    y1 = yi;
+// Direct form II transposed with scipy.signal.sosfilt_zi steady-state initial conditions.
+function filterCascade(sos: number[][], input: Float64Array): Float64Array {
+  let signal = input;
+  let scale = input[0];
+  for (const sec of sos) {
+    const [b0_, b1_, b2_, a0, a1_, a2_] = sec;
+    const b0 = b0_ / a0,
+      b1 = b1_ / a0,
+      b2 = b2_ / a0;
+    const a1 = a1_ / a0,
+      a2 = a2_ / a0;
+    const gain = (b0 + b1 + b2) / (1 + a1 + a2);
+    let z1 = (gain - b0) * scale;
+    let z2 = (b2 - a2 * gain) * scale;
+    const output = new Float64Array(signal.length);
+    for (let i = 0; i < signal.length; i++) {
+      const value = b0 * signal[i] + z1;
+      z1 = b1 * signal[i] - a1 * value + z2;
+      z2 = b2 * signal[i] - a2 * value;
+      output[i] = value;
+    }
+    scale *= gain;
+    signal = output;
   }
-  return y;
+  return signal;
 }
 
-/**
- * Zero-phase moving average filter for powerline noise (matching NeuroKit2 powerline filter)
- */
-export function powerlineFilter(signal: Float64Array, fs: number, powerline = 50): Float64Array {
+/** Butterworth order 5, 0.5 Hz highpass; bilinear transform of the analog poles. */
+export function butterHighpass(fs: number): number[][] {
+  if (!Number.isFinite(fs) || fs < 100 || fs > 2000)
+    throw new Error("Sampling rate must be 100–2000 Hz");
+  if (fs === 512) return BUTTER_5_HIGHPASS_512_SOS;
+  const c = Math.tan((Math.PI * 0.5) / fs);
+  const realPole = (1 - c) / (1 + c);
+  const sections = [[1, -1, 0, 1, -realPole, 0]];
+  let gain = (1 + realPole) / 2;
+  for (const angle of [Math.PI / 5, (2 * Math.PI) / 5]) {
+    const pr = -Math.cos(angle),
+      pi = Math.sin(angle);
+    const denominator = (1 - c * pr) ** 2 + (c * pi) ** 2;
+    const zr = (1 - c * c) / denominator;
+    const zi = (-2 * c * pi) / denominator;
+    const a1 = -2 * zr,
+      a2 = zr * zr + zi * zi;
+    sections.push([1, -2, 1, 1, a1, a2]);
+    gain *= (1 - a1 + a2) / 4;
+  }
+  sections[0][0] = gain;
+  sections[0][1] = -gain;
+  return sections;
+}
+
+/** Moving-average FIR filtfilt, including odd padding and steady-state initialization. */
+export function powerlineFilter(
+  signal: Float64Array,
+  fs: number,
+  powerline = 50,
+): Float64Array {
   const m = Math.max(2, Math.floor(fs / powerline));
-  // Moving average forward and backward with zero phase
-  const pass1 = uniformFilter1d(signal, m);
-  const rev = new Float64Array(pass1).reverse();
-  const pass2 = uniformFilter1d(rev, m);
-  return pass2.reverse();
+  const edge = 3 * m;
+  if (signal.length <= edge)
+    throw new Error(`Signal must contain more than ${edge} samples`);
+  const padded = new Float64Array(signal.length + 2 * edge);
+  for (let i = 0; i < edge; i++) padded[i] = 2 * signal[0] - signal[edge - i];
+  padded.set(signal, edge);
+  for (let i = 0; i < edge; i++)
+    padded[edge + signal.length + i] =
+      2 * signal[signal.length - 1] - signal[signal.length - 2 - i];
+  const pass = (x: Float64Array) => {
+    const out = new Float64Array(x.length);
+    const z = new Float64Array(m - 1);
+    for (let k = 0; k < m - 1; k++) z[k] = ((m - 1 - k) / m) * x[0];
+    for (let i = 0; i < x.length; i++) {
+      out[i] = x[i] / m + z[0];
+      for (let k = 0; k < m - 2; k++) z[k] = x[i] / m + z[k + 1];
+      z[m - 2] = x[i] / m;
+    }
+    return out;
+  };
+  let output = pass(padded);
+  output.reverse();
+  output = pass(output);
+  output.reverse();
+  return output.slice(edge, edge + signal.length);
 }
 
-/**
- * ECG cleaning matching NeuroKit2's default pipeline:
- * 0.5 Hz highpass butterworth filter (order=5) + 50 Hz powerline filter
- */
 export function ecgClean(signal: Float64Array, fs = 512): Float64Array {
-  // 1. Highpass Butterworth 0.5 Hz
-  const highpassed = sosFiltFilt(BUTTER_5_HIGHPASS_512_SOS, signal);
-  // 2. Powerline filter (50 Hz)
-  return powerlineFilter(highpassed, fs, 50);
+  return powerlineFilter(sosFiltFilt(butterHighpass(fs), signal), fs, 50);
+}
+
+/** NumPy arange semantics, including the representable effective step. */
+export function sampleGrid(
+  start: number,
+  end: number,
+  fs: number,
+): Float64Array {
+  const dt = 1 / fs;
+  const count = Math.ceil((end - start) / dt);
+  if (!Number.isFinite(count) || count <= 0 || count > 120000)
+    throw new Error("Invalid or excessive signal duration");
+  const step = start + dt - start;
+  return Float64Array.from({ length: count }, (_, i) => start + i * step);
 }

@@ -31,7 +31,7 @@ export function detectArtifactWindows(
   t: Float64Array,
   v: Float64Array,
   fs: number,
-  baseInput?: Float64Array
+  baseInput?: Float64Array,
 ): [number, number][] {
   const base = baseInput ?? estimateBaseline(v, fs);
   const win = fs;

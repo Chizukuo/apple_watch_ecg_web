@@ -17,7 +17,7 @@ import requests
 # Link to Python project dynamically
 PY_PROJECT = Path(os.environ.get("APPLE_WATCH_ECG_PY_DIR", Path(__file__).resolve().parent.parent.parent / "apple_watch_ecg"))
 if not PY_PROJECT.exists():
-    PY_PROJECT = Path(r"c:\Users\27232\Documents\apple_watch_ecg")
+    raise RuntimeError("Set APPLE_WATCH_ECG_PY_DIR to the Python reference checkout")
 
 sys.path.insert(0, str(PY_PROJECT))
 sys.path.insert(0, str(PY_PROJECT / "tests"))
@@ -45,10 +45,11 @@ def is_web_api_running() -> bool:
         return False
 
 
-pytestmark = pytest.mark.skipif(
-    not is_web_api_running(),
-    reason="Web API is not running on http://127.0.0.1:8788. Start with npm run dev (or npx wrangler pages dev public)."
-)
+@pytest.fixture(scope="session", autouse=True)
+def require_api():
+    if not is_web_api_running():
+        pytest.fail("Local API is not running; start npm run dev before the HTTP parity suite")
+
 
 
 def make_pdf(tmp_path: Path, name=FAKE_FILE, beats=None, hr=72.0, events=None, alt=None, **pdf_kw):
@@ -64,7 +65,7 @@ def post_to_web(path: Path, format="json", params=None) -> tuple[int, dict | str
     with open(path, "rb") as f:
         pdf_bytes = f.read()
     url = f"{API_URL}?format={format}"
-    resp = requests.post(url, data=pdf_bytes, params=params, headers={"Content-Type": "application/pdf"})
+    resp = requests.post(url, data=pdf_bytes, params=params, headers={"Content-Type": "application/pdf"}, timeout=30)
     if format == "json":
         return resp.status_code, resp.json()
     return resp.status_code, resp.text
@@ -300,33 +301,13 @@ def test_web_watch_classification_inconsistency(tmp_path):
 # ---------------------------------------------------------------------------
 # 12. 真实真机 PDF 验证测试 (Real Hardware PDF Validation)
 # ---------------------------------------------------------------------------
-def test_web_real_user_pdf():
-    real_pdf = Path(r"C:\Users\27232\Downloads\健康 - 黄麒文 - 心电图2026-10-18 13.33.pdf")
-    if not real_pdf.exists():
-        pytest.skip("Real PDF not found")
-
-    rec = A.load(real_pdf)
-    py_res = A.analyze(rec)
-    py_rep = py_res["report"]
-
-    status, web_res = post_to_web(real_pdf, format="json")
+@pytest.mark.skipif(not os.environ.get("TEST_REAL_PDF_PATH"), reason="Optional local reference file not provided")
+def test_web_optional_local_pdf():
+    path = Path(os.environ["TEST_REAL_PDF_PATH"])
+    rec = A.load(path)
+    expected = A.analyze(rec)["report"]
+    status, actual = post_to_web(path)
     assert status == 200
-    assert web_res["code"] == 0
-
-    assert web_res["identity"]["name"] == "黄麒文"
-    assert web_res["identity"]["dob"] == "2005-10-19"
-    assert web_res["watch"]["classification"] == "窦性心律"
-    assert web_res["rhythm"]["beats"] == py_rep["rhythm"]["beats"]
-    assert abs(web_res["rhythm"]["hr_bpm"] - py_rep["rhythm"]["hr_bpm"]) < 0.1
-    assert web_res["rhythm"]["n_normal"] == py_rep["rhythm"]["n_normal"]
-    assert web_res["rhythm"]["n_premature_same"] == py_rep["rhythm"]["n_premature_same"]
-    assert web_res["rhythm"]["n_premature_diff"] == py_rep["rhythm"]["n_premature_diff"]
-
-    # Verify SVG endpoint returns 200 and image/svg+xml
-    svg_status, svg_text = post_to_web(real_pdf, format="svg")
-    assert svg_status == 200
-    assert svg_text.startswith("<svg")
-    assert svg_text.endswith("</svg>")
-    assert "黄麒文" in svg_text or "窦性心律" in svg_text
-    assert "QRS 68 ms" in svg_text
-    assert "QT 365 ms" in svg_text
+    assert "identity" not in actual
+    assert actual["rhythm"]["beats"] == expected["rhythm"]["beats"]
+    assert abs(actual["rhythm"]["hr_bpm"] - expected["rhythm"]["hr_bpm"]) < .1

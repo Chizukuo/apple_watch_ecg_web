@@ -8,13 +8,13 @@ export const PT_PER_MM = 72.0 / 25.4;
 export const STRIP_SECONDS = 10.0;
 
 // Rhythm determination thresholds
-export const PREMATURE_RATIO = 0.80;
+export const PREMATURE_RATIO = 0.8;
 export const ABRUPT_RATIO = 0.88;
-export const PAUSE_RATIO = 1.70;
+export const PAUSE_RATIO = 1.7;
 export const SAME_QRS_CORR = 0.85;
-export const ODD_QRS_CORR = 0.70;
+export const ODD_QRS_CORR = 0.7;
 export const WIDE_QRS_DELTA_MS = 40;
-export const TEMPLATE_CORR = 0.90;
+export const TEMPLATE_CORR = 0.9;
 export const ALT_MIN_DELTA_MS = 80;
 export const T_GUARD_MAX_S = 0.42;
 export const T_GUARD_SLOPE = 0.33;
@@ -50,16 +50,16 @@ export const QT_MAX_IQR_MS = 40;
 export const QRS_WIDE_MS = 120;
 export const PR_LONG_MS = 200;
 export const PR_SHORT_MS = 120;
-export const ST_DEV_MV = 0.10;
-export const T_INV_MIN_MV = 0.10;
+export const ST_DEV_MV = 0.1;
+export const T_INV_MIN_MV = 0.1;
 export const MIN_TEMPLATE_BEATS = 5;
 export const PR_MAX_HR = 100;
 
 export const SEXES = ["male", "female", "unknown"] as const;
-export type Sex = typeof SEXES[number];
+export type Sex = (typeof SEXES)[number];
 
 export const PLACEMENTS = ["wrist", "other"] as const;
-export type Placement = typeof PLACEMENTS[number];
+export type Placement = (typeof PLACEMENTS)[number];
 
 export const SKIP_QT = "未做 QTc 提醒";
 
@@ -254,6 +254,7 @@ export interface Report {
   morphology_alerts: {
     sex: string;
     placement: string;
+    qtc_formula?: "Bazett" | "Fridericia";
     alerts: AlertItem[];
     skipped: string[];
   };

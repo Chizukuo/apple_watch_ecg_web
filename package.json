@@ -1,13 +1,16 @@
 {
   "name": "apple-watch-ecg-web",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Apple Watch ECG analysis — Cloudflare Pages (WebUI + iOS Shortcuts API)",
+  "description": "Apple Watch ECG analysis \u2014 Cloudflare Pages (WebUI + iOS Shortcuts API)",
   "scripts": {
     "dev": "wrangler pages dev public",
-    "build": "tsc --noEmit",
+    "build": "node --check public/app.js && tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:integration": "python scripts/run-integration.py",
+    "format:check": "prettier --check src functions test/*.ts e2e public/app.js playwright.config.ts vitest.config.mts"
   },
   "keywords": [
     "apple-watch",
@@ -19,13 +22,22 @@
   "license": "GPL-3.0-or-later",
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261006.1",
+    "@playwright/test": "^1.64.1",
+    "@types/jpeg-js": "^0.3.0",
     "@types/node": "^26.6.5",
     "@types/pako": "^2.0.4",
+    "prettier": "^3.9.10",
     "typescript": "^5.7.3",
-    "vitest": "^3.2.1",
+    "vitest": "^5.0.5",
     "wrangler": "^4.149.0"
   },
   "dependencies": {
-    "pako": "^3.0.2"
+    "fast-png": "^8.0.0",
+    "jpeg-js": "^0.4.4",
+    "pako": "^3.0.2",
+    "pdf-lib": "^1.17.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -7,3 +7,15 @@ coverage/
 .DS_Store
 __pycache__/
 .pytest_cache/
+
+playwright-report/
+test-results/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.csv
+!public/sample_ecg.pdf
+!test/fixtures/synthetic_demo.pdf
+
+python-reference/

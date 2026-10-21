@@ -31,6 +31,7 @@ import {
   WatchInfo,
   AlertItem,
 } from "./types";
+import { pythonRound } from "./round";
 import { mean, median, percentile, std, var_ } from "./dsp";
 import { detectArtifactWindows, estimateBaseline } from "./baseline";
 import { detectBeats, inAny } from "./detector";
@@ -40,7 +41,11 @@ import { morphologyAlerts } from "./alerts";
 /**
  * Checks if interval [a0, a1] overlaps with any interval in intervals.
  */
-function overlaps(a0: number, a1: number, intervals: [number, number][]): boolean {
+function overlaps(
+  a0: number,
+  a1: number,
+  intervals: [number, number][],
+): boolean {
   for (let i = 0; i < intervals.length; i++) {
     const [b0, b1] = intervals[i];
     if (!(b1 < a0 || b0 > a1)) return true;
@@ -53,8 +58,7 @@ function overlaps(a0: number, a1: number, intervals: [number, number][]): boolea
  */
 function r1(x: number | null | undefined, n = 1): number | null {
   if (x === null || x === undefined || isNaN(x)) return null;
-  const factor = Math.pow(10, n);
-  return Math.round(x * factor) / factor;
+  return pythonRound(x, n);
 }
 
 function arrayMin(arr: Float64Array | number[]): number | null {
@@ -87,7 +91,7 @@ function classifyBeats(
   cq: (number | null)[],
   widths: (number | null)[],
   width_t: number,
-  refFor: (skip: Set<number>, center: number) => number
+  refFor: (skip: Set<number>, center: number) => number,
 ) {
   const labels: string[] = [];
   const premRatio: (number | null)[] = [];
@@ -112,7 +116,8 @@ function classifyBeats(
       }
     }
 
-    const isWide = widths[k] !== null && widths[k]! - width_t >= WIDE_QRS_DELTA_MS;
+    const isWide =
+      widths[k] !== null && widths[k]! - width_t >= WIDE_QRS_DELTA_MS;
     const c = cq[k] !== null ? cq[k]! : 1.0;
 
     let abrupt = true;
@@ -126,7 +131,9 @@ function classifyBeats(
     }
 
     if (pr_ !== null && pr_ < PREMATURE_RATIO && abrupt) {
-      labels.push(c < SAME_QRS_CORR || isWide ? LABEL_PREM_DIFF : LABEL_PREM_SAME);
+      labels.push(
+        c < SAME_QRS_CORR || isWide ? LABEL_PREM_DIFF : LABEL_PREM_SAME,
+      );
     } else if (c < ODD_QRS_CORR || isWide) {
       labels.push(LABEL_ODD);
     } else {
@@ -146,7 +153,9 @@ function classifyBeats(
 
   const same = premK.filter((k) => labels[k] === LABEL_PREM_SAME);
   const diff = premK.filter((k) => labels[k] === LABEL_PREM_DIFF);
-  const odd = labels.map((l, idx) => (l === LABEL_ODD ? idx : -1)).filter((idx) => idx !== -1);
+  const odd = labels
+    .map((l, idx) => (l === LABEL_ODD ? idx : -1))
+    .filter((idx) => idx !== -1);
 
   return { labels, premRatio, compRatio, premK, same, diff, odd };
 }
@@ -160,7 +169,7 @@ function detectPauses(
   rr: Float64Array,
   times: Float64Array,
   labels: string[],
-  refFor: (skip: Set<number>, center: number) => number
+  refFor: (skip: Set<number>, center: number) => number,
 ) {
   const pauses: PauseItem[] = [];
   const compPauses: PauseItem[] = [];
@@ -172,7 +181,7 @@ function detectPauses(
       const item: PauseItem = {
         start_s: r1(times[k], 2)!,
         end_s: r1(times[k + 1], 2)!,
-        rr_ms: Math.round(rr[k] * 1000),
+        rr_ms: pythonRound(rr[k] * 1000),
         ratio: r1(ratio, 2)!,
       };
       if (labels[k] === LABEL_PREM_SAME || labels[k] === LABEL_PREM_DIFF) {
@@ -194,7 +203,7 @@ function detectRhythmPatterns(
   rr: Float64Array,
   usable: boolean[],
   times: Float64Array,
-  premK: number[]
+  premK: number[],
 ) {
   // 1. Long-short alternation
   const usK: number[] = [];
@@ -237,7 +246,7 @@ function detectRhythmPatterns(
     const a = premK[i];
     const b = premK[i + 1];
     runK = b - a === 2 ? [...runK, b] : [b];
-    if (runK.length >= 3 && bigeminy === null) {
+    if (runK.length >= 3) {
       bigeminy = r1(times[runK[0]], 1);
     }
   }
@@ -255,7 +264,7 @@ function computeHrvMetrics(
   rr: Float64Array,
   times: Float64Array,
   pauseStarts: Set<number>,
-  usableRrs: Float64Array
+  usableRrs: Float64Array,
 ) {
   const nnIdx: number[] = [];
   for (let k = 0; k < nb - 1; k++) {
@@ -320,7 +329,7 @@ function buildAverageTemplate(
   cqt: (number | null)[],
   rrMean: number,
   fs: number,
-  clip: Uint8Array
+  clip: Uint8Array,
 ) {
   const pre = Math.floor(Math.min(0.4, 0.75 * rrMean) * fs);
   const post = Math.floor(Math.min(0.6, 0.92 * rrMean) * fs);
@@ -343,8 +352,8 @@ function buildAverageTemplate(
     }
 
     if (tbIdx.length >= 3) {
-      const W: Float64Array[] = tbIdx.map((k) =>
-        new Float64Array(v.subarray(pos[k] - pre, pos[k] + post))
+      const W: Float64Array[] = tbIdx.map(
+        (k) => new Float64Array(v.subarray(pos[k] - pre, pos[k] + post)),
       );
       morph = measureTemplate(W, pre, rrMean, fs);
       morph.beat_idx = tbIdx;
@@ -395,22 +404,37 @@ function compileClinicalFlags(params: {
   times: Float64Array;
 }): string[] {
   const {
-    diff, same, odd, bigeminy, pauses, altRuns, removed, exclude,
-    artifacts, clipped, morph, hr, watch, premK, sortedAlerts,
-    placement, times,
+    diff,
+    same,
+    odd,
+    bigeminy,
+    pauses,
+    altRuns,
+    removed,
+    exclude,
+    artifacts,
+    clipped,
+    morph,
+    hr,
+    watch,
+    premK,
+    sortedAlerts,
+    placement,
+    times,
   } = params;
 
   const flags: string[] = [];
-  const tList = (ks: number[]) => ks.map((k) => times[k].toFixed(1)).join("、") + " 秒";
+  const tList = (ks: number[]) =>
+    ks.map((k) => times[k].toFixed(1)).join("、") + " 秒";
 
   if (diff.length > 0) {
     flags.push(
-      `${diff.length} 个提前搏动（QRS 异形）：${tList(diff)}。可能为室性早搏（或伴差异传导的房性早搏），请就医时提供原始 PDF`
+      `${diff.length} 个提前搏动（QRS 异形）：${tList(diff)}。可能为室性早搏（或伴差异传导的房性早搏），请就医时提供原始 PDF`,
     );
   }
   if (same.length > 0) {
     flags.push(
-      `${same.length} 个提前搏动（QRS 同形）：${tList(same)}。可能为房性早搏，也可能是窦性心律不齐，单导联无法确定`
+      `${same.length} 个提前搏动（QRS 同形）：${tList(same)}。可能为房性早搏，也可能是窦性心律不齐，单导联无法确定`,
     );
   }
   if (bigeminy !== null) {
@@ -420,20 +444,23 @@ function compileClinicalFlags(params: {
     flags.push(
       "长间歇：" +
         pauses
-          .map((p) => `${p.start_s}–${p.end_s} 秒（${p.rr_ms} ms，约为参考间期的 ${p.ratio} 倍）`)
-          .join("；")
+          .map(
+            (p) =>
+              `${p.start_s}–${p.end_s} 秒（${p.rr_ms} ms，约为参考间期的 ${p.ratio} 倍）`,
+          )
+          .join("；"),
     );
   }
   if (altRuns.length > 0) {
     flags.push(
       "RR 间期出现规律的长短交替（起点约 " +
         altRuns.map((x) => `${x} 秒`).join("、") +
-        "）：可能是呼吸相关的窦性心律不齐，也可能是房性二联律，单导联无法区分；此时 RMSSD 与 Poincaré 图不能按常规 HRV 解读"
+        "）：可能是呼吸相关的窦性心律不齐，也可能是房性二联律，单导联无法区分；此时 RMSSD 与 Poincaré 图不能按常规 HRV 解读",
     );
   }
   if (odd.length > 0) {
     flags.push(
-      `${odd.length} 个心搏出现时间正常但形态异常：${tList(odd)}。多为伪影或接触变化，也可能是异常搏动，请人工查看`
+      `${odd.length} 个心搏出现时间正常但形态异常：${tList(odd)}。多为伪影或接触变化，也可能是异常搏动，请人工查看`,
     );
   }
   if (removed.length > 0) {
@@ -442,8 +469,10 @@ function compileClinicalFlags(params: {
     if (artifacts.length > 0) kinds.push("自动识别的伪影");
     flags.push(
       `以下时段被排除（${kinds.join("、")}）：` +
-        removed.map(([a, b]) => `${a.toFixed(1)}–${b.toFixed(1)} 秒`).join("，") +
-        "。跨越这些时段的间隔不计入 RR/HRV，也不会被当作停顿"
+        removed
+          .map(([a, b]) => `${a.toFixed(1)}–${b.toFixed(1)} 秒`)
+          .join("，") +
+        "。跨越这些时段的间隔不计入 RR/HRV，也不会被当作停顿",
     );
   }
   if (clipped) {
@@ -457,7 +486,9 @@ function compileClinicalFlags(params: {
 
   const repBpm = watch.reported_bpm;
   if (repBpm !== null && Math.abs(hr - repBpm) > 3) {
-    flags.push(`计算心率 ${hr.toFixed(0)} 与手表报告 ${repBpm} 相差超过 3 次/分，请检查提取结果`);
+    flags.push(
+      `计算心率 ${hr.toFixed(0)} 与手表报告 ${repBpm} 相差超过 3 次/分，请检查提取结果`,
+    );
   }
 
   const cat = watch.category;
@@ -465,24 +496,31 @@ function compileClinicalFlags(params: {
     const [lo, hi] = WATCH_RANGES_V2[cat];
     if (!(lo - 2 <= hr && hr <= hi + 2)) {
       flags.push(
-        `手表分类“${watch.classification}”对应 ${lo}–${hi} 次/分，与计算心率 ${hr.toFixed(0)} 不一致，请检查提取结果`
+        `手表分类“${watch.classification}”对应 ${lo}–${hi} 次/分，与计算心率 ${hr.toFixed(0)} 不一致，请检查提取结果`,
       );
     }
-  } else if (watch.algorithm_version !== null && watch.algorithm_version !== 2) {
-    flags.push(`手表算法版本为 ${watch.algorithm_version}，未内置其分类规则，跳过分类一致性检查`);
+  } else if (
+    watch.algorithm_version !== null &&
+    watch.algorithm_version !== 2
+  ) {
+    flags.push(
+      `手表算法版本为 ${watch.algorithm_version}，未内置其分类规则，跳过分类一致性检查`,
+    );
   }
 
   if (cat === "afib" || cat === "afib_high") {
     flags.push("手表提示房颤：本工具不做房颤判断，请以手表结果和医生意见为准");
   }
   if (cat === "sinus" && (premK.length > 0 || pauses.length > 0)) {
-    flags.push("手表判为窦性心律与上述提示并不矛盾：Apple 的算法只区分房颤与窦性心律，不识别早搏和停顿");
+    flags.push(
+      "手表判为窦性心律与上述提示并不矛盾：Apple 的算法只区分房颤与窦性心律，不识别早搏和停顿",
+    );
   }
 
   const age = watch.age_at_recording;
   if (age !== null && age < APPLE_MIN_AGE) {
     flags.push(
-      `记录时 ${age} 岁：Apple 说明书注明心电图 App 不适用于 ${APPLE_MIN_AGE} 岁以下人群，手表分类仅供参考（波形仍可分析）`
+      `记录时 ${age} 岁：Apple 说明书注明心电图 App 不适用于 ${APPLE_MIN_AGE} 岁以下人群，手表分类仅供参考（波形仍可分析）`,
     );
   }
   if (watch.symptoms) {
@@ -490,7 +528,9 @@ function compileClinicalFlags(params: {
   }
 
   flags.push("HRV 来自约 30 秒的超短时记录，仅供同条件下自身对比");
-  flags.push("PDF 一律标注“导联 I”；若手表不是贴在对侧手腕上记录，则不是标准导联 I");
+  flags.push(
+    "PDF 一律标注“导联 I”；若手表不是贴在对侧手腕上记录，则不是标准导联 I",
+  );
 
   const fullFlags = [
     ...sortedAlerts.map((a) => `【${a.level}】${a.text}`),
@@ -498,7 +538,9 @@ function compileClinicalFlags(params: {
   ];
 
   if (placement !== "wrist") {
-    fullFlags.push("已声明手表不在手腕上记录：波形方向和幅度与标准导联 I 不可比");
+    fullFlags.push(
+      "已声明手表不在手腕上记录：波形方向和幅度与标准导联 I 不可比",
+    );
   }
 
   return fullFlags;
@@ -513,7 +555,7 @@ export function analyze(
   rec: Recording,
   exclude: [number, number][] = [],
   sex: Sex = "unknown",
-  placement: Placement = "wrist"
+  placement: Placement = "wrist",
 ): AnalysisOutput {
   const { fs, t, v } = rec;
   const baseline = estimateBaseline(v, fs);
@@ -523,14 +565,22 @@ export function analyze(
   const { beats: rawBeats, sources } = detectBeats(t, v, fs, removed);
   const remFlags = rawBeats.map((b) => inAny(t[b], removed));
 
-  const { pos, cq, cqt, widths, width_t } = beatMorphology(v, rawBeats, fs, remFlags, baseline);
+  const { pos, cq, cqt, widths, width_t } = beatMorphology(
+    v,
+    rawBeats,
+    fs,
+    remFlags,
+    baseline,
+  );
   const notes = [...rec.notes];
 
   // Head artifacts removal
   const beats = [...rawBeats];
   for (let k = pos.length - 1; k >= 0; k--) {
     if (t[pos[k]] - t[0] < 0.45 && cq[k] !== null && cq[k]! < 0.5) {
-      notes.push(`记录开头 ${t[pos[k]].toFixed(2)} 秒处的不完整波形已忽略（多为记录开始前那一拍的 T 波）`);
+      notes.push(
+        `记录开头 ${t[pos[k]].toFixed(2)} 秒处的不完整波形已忽略（多为记录开始前那一拍的 T 波）`,
+      );
       beats.splice(k, 1);
       remFlags.splice(k, 1);
       pos.splice(k, 1);
@@ -591,25 +641,34 @@ export function analyze(
   }
 
   // 1. Classify beats
-  const { labels, premRatio, compRatio, premK, same, diff, odd } = classifyBeats(
-    nb, remFlags, usable, rr, cq, widths, width_t, refFor
-  );
+  const { labels, premRatio, compRatio, premK, same, diff, odd } =
+    classifyBeats(nb, remFlags, usable, rr, cq, widths, width_t, refFor);
 
   // 2. Detect pauses & rhythm patterns
   const { pauses, compPauses, pauseStarts } = detectPauses(
-    nb, usable, rr, times, labels, refFor
+    nb,
+    usable,
+    rr,
+    times,
+    labels,
+    refFor,
   );
   const { altRuns, bigeminy } = detectRhythmPatterns(rr, usable, times, premK);
 
   // 3. Compute HRV metrics
-  const { nn, consecPairs, hr, hrNn, sdnn, rmssd, pnn50, sd1, sd2 } = computeHrvMetrics(
-    nb, usable, labels, rr, times, pauseStarts, usableRrs
-  );
+  const { nn, consecPairs, hr, hrNn, sdnn, rmssd, pnn50, sd1, sd2 } =
+    computeHrvMetrics(nb, usable, labels, rr, times, pauseStarts, usableRrs);
 
   // 4. Build average template & measure morphology
   const rrMean = nn.length > 0 ? mean(nn) / 1000 : globMed;
   const { morph, clipped } = buildAverageTemplate(
-    v, pos, labels, cqt, rrMean, fs, rec.clip
+    v,
+    pos,
+    labels,
+    cqt,
+    rrMean,
+    fs,
+    rec.clip,
   );
 
   // 5. Build beat table
@@ -666,9 +725,16 @@ export function analyze(
       }
     : null;
 
-  const { alerts, skipped } = morphologyAlerts(morphologyReport, hr, sex, placement);
+  const { alerts, skipped } = morphologyAlerts(
+    morphologyReport,
+    hr,
+    sex,
+    placement,
+  );
   if (morphologyReport) {
-    morphologyReport.qt_reliable = !skipped.some((x) => x.endsWith("未做 QTc 提醒"));
+    morphologyReport.qt_reliable = !skipped.some((x) =>
+      x.endsWith("未做 QTc 提醒"),
+    );
   }
 
   const sortedAlerts = alerts.slice().sort((a, b) => {
@@ -678,15 +744,29 @@ export function analyze(
 
   // 7. Assemble clinical flags and comparison
   const fullFlags = compileClinicalFlags({
-    diff, same, odd, bigeminy, pauses, altRuns, removed, exclude,
-    artifacts, clipped, morph, hr, watch: rec.watch, premK, sortedAlerts,
-    placement, times,
+    diff,
+    same,
+    odd,
+    bigeminy,
+    pauses,
+    altRuns,
+    removed,
+    exclude,
+    artifacts,
+    clipped,
+    morph,
+    hr,
+    watch: rec.watch,
+    premK,
+    sortedAlerts,
+    placement,
+    times,
   });
 
   const repBpm = rec.watch.reported_bpm;
 
   const report: Report = {
-    tool_version: "1.0.0",
+    tool_version: "1.1.0",
     record_id: rec.record_id,
     source: rec.source,
     watch: rec.watch,
@@ -695,8 +775,14 @@ export function analyze(
       hr_bpm: r1(hr),
       hr_nn_bpm: r1(hrNn),
       reported_bpm: repBpm,
-      rr_ms_min: r1(arrayMin(usableRrs) !== null ? arrayMin(usableRrs)! * 1000 : null, 0),
-      rr_ms_max: r1(arrayMax(usableRrs) !== null ? arrayMax(usableRrs)! * 1000 : null, 0),
+      rr_ms_min: r1(
+        arrayMin(usableRrs) !== null ? arrayMin(usableRrs)! * 1000 : null,
+        0,
+      ),
+      rr_ms_max: r1(
+        arrayMax(usableRrs) !== null ? arrayMax(usableRrs)! * 1000 : null,
+        0,
+      ),
       n_normal: labels.filter((l) => l === LABEL_NORMAL).length,
       n_premature_same: same.length,
       n_premature_diff: diff.length,
@@ -729,6 +815,7 @@ export function analyze(
     morphology_alerts: {
       sex,
       placement,
+      qtc_formula: hr > 100 ? "Fridericia" : "Bazett",
       alerts,
       skipped,
     },

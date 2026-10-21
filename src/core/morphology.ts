@@ -14,7 +14,7 @@ export function qrsBounds(
   sm: Float64Array,
   center: number,
   fs: number,
-  extend = false
+  extend = false,
 ): [number, number] {
   const grad = gradient(sm);
   const d = new Float64Array(grad.length);
@@ -155,7 +155,7 @@ export function tangentTend(
   tpk: number,
   base: number,
   fs: number,
-  sign: number
+  sign: number,
 ): number | null {
   const len = Math.floor(0.18 * fs);
   const end = Math.min(sm.length, tpk + len);
@@ -193,7 +193,7 @@ export function beatMorphology(
   beats: number[],
   fs: number,
   removedFlags: boolean[],
-  baseInput?: Float64Array
+  baseInput?: Float64Array,
 ): BeatMorphologyOutput {
   const vRaw = v;
   const win = toOdd(0.029 * fs);
@@ -270,7 +270,9 @@ export function beatMorphology(
   let cq = aligned.map((a) => a[1]);
 
   // Second pass template refinement
-  const good = pos.filter((_, idx) => cq[idx] !== null && cq[idx]! >= 0.9 && !removedFlags[idx]);
+  const good = pos.filter(
+    (_, idx) => cq[idx] !== null && cq[idx]! >= 0.9 && !removedFlags[idx],
+  );
   const tmpl2 = buildTemplate(good);
   if (tmpl2) {
     tmpl = tmpl2;
@@ -291,14 +293,20 @@ export function beatMorphology(
       cqt.push(null);
     } else {
       L = Math.min(L, vSmooth.length - p);
-      cqt.push(corr(vSmooth.subarray(p - qa, p + L), tmpl.subarray(A - qa, A + L)));
+      cqt.push(
+        corr(vSmooth.subarray(p - qa, p + L), tmpl.subarray(A - qa, A + L)),
+      );
     }
 
     const a1 = Math.min(A, p);
     const b1 = Math.min(B, vSmooth.length - p);
     const segRaw = vRaw.subarray(p - a1, p + b1);
 
-    if (segRaw.length >= win + 2 && a1 >= Math.floor(0.1 * fs) && b1 >= Math.floor(0.18 * fs)) {
+    if (
+      segRaw.length >= win + 2 &&
+      a1 >= Math.floor(0.1 * fs) &&
+      b1 >= Math.floor(0.18 * fs)
+    ) {
       const segSm = savgolFilter(new Float64Array(segRaw), win, 3);
       const [on, J] = qrsBounds(segSm, a1, fs, false);
       widths.push(((J - on) / fs) * 1000);
@@ -308,7 +316,8 @@ export function beatMorphology(
   }
 
   let refWidths = widths.filter(
-    (w, idx) => w !== null && cq[idx] !== null && cq[idx]! >= 0.9 && !removedFlags[idx]
+    (w, idx) =>
+      w !== null && cq[idx] !== null && cq[idx]! >= 0.9 && !removedFlags[idx],
   ) as number[];
 
   if (refWidths.length < 3) {
@@ -326,7 +335,7 @@ export function measureTemplate(
   W: Float64Array[],
   pre: number,
   rrMean: number,
-  fs: number
+  fs: number,
 ): MorphologyResult {
   const win = toOdd(0.029 * fs);
   const nBeats = W.length;
@@ -358,28 +367,61 @@ export function measureTemplate(
   const base = basePqSum / Math.max(1, q1 - q0);
 
   // 4. R & S peak detection and amplitudes
-  const { R, S, r_amp, s_amp } = measureQrsAmplitudes(sm, W_norm, on, J, nBeats);
+  const { R, S, r_amp, s_amp } = measureQrsAmplitudes(
+    sm,
+    W_norm,
+    on,
+    J,
+    nBeats,
+  );
 
   // 5. T-wave & QT measurement
   const { Tpk, Tend, t_sign, qt, qtsList } = measureTWave(
-    sm, d, base, J, pre, rrMean, fs, nBeats, W_norm, on, q0, q1, win
+    sm,
+    d,
+    base,
+    J,
+    pre,
+    rrMean,
+    fs,
+    nBeats,
+    W_norm,
+    on,
+    q0,
+    q1,
+    win,
   );
 
   // 6. P-wave & PR measurement
   const { P, p_amp, p_pol, p_ok, pr } = measurePWave(
-    sm, base_tp, on, rrMean, fs, nBeats, W_norm, tm
+    sm,
+    base_tp,
+    on,
+    rrMean,
+    fs,
+    nBeats,
+    W_norm,
+    tm,
   );
 
   // 7. Full template noise estimation
-  let fullNoiseSum = 0;
+  let fullNoiseSum = 0,
+    fullNoiseMean = 0;
   const totalPoints = nBeats * len;
   for (let r = 0; r < nBeats; r++) {
     for (let c = 0; c < len; c++) {
       const diff = W_norm[r][c] - tm[c];
       fullNoiseSum += diff * diff;
+      fullNoiseMean += diff;
     }
   }
-  const noise = Math.sqrt(fullNoiseSum / Math.max(1, totalPoints));
+  const noise = Math.sqrt(
+    Math.max(
+      0,
+      fullNoiseSum / Math.max(1, totalPoints) -
+        (fullNoiseMean / Math.max(1, totalPoints)) ** 2,
+    ),
+  );
 
   const j60Idx = Math.min(J + Math.floor(0.06 * fs), sm.length - 1);
 
@@ -413,7 +455,11 @@ export function measureTemplate(
   };
 }
 
-function normalizeTpBaseline(W: Float64Array[], b0: number, b1: number): Float64Array[] {
+function normalizeTpBaseline(
+  W: Float64Array[],
+  b0: number,
+  b1: number,
+): Float64Array[] {
   const nBeats = W.length;
   const len = W[0].length;
   const W_norm: Float64Array[] = [];
@@ -428,7 +474,10 @@ function normalizeTpBaseline(W: Float64Array[], b0: number, b1: number): Float64
   return W_norm;
 }
 
-function computeColumnMedians(matrix: Float64Array[], len: number): Float64Array {
+function computeColumnMedians(
+  matrix: Float64Array[],
+  len: number,
+): Float64Array {
   const nRows = matrix.length;
   const out = new Float64Array(len);
   const col = new Float64Array(nRows);
@@ -444,7 +493,7 @@ function measureQrsAmplitudes(
   W_norm: Float64Array[],
   on: number,
   J: number,
-  nBeats: number
+  nBeats: number,
 ): { R: number; S: number; r_amp: number; s_amp: number } {
   let R = on;
   let maxR = sm[on];
@@ -501,13 +550,19 @@ function measureTWave(
   on: number,
   q0: number,
   q1: number,
-  win: number
-): { Tpk: number | null; Tend: number | null; t_sign: number; qt: number | null; qtsList: number[] } {
+  win: number,
+): {
+  Tpk: number | null;
+  Tend: number | null;
+  t_sign: number;
+  qt: number | null;
+  qtsList: number[];
+} {
   const ta = J + Math.floor(0.06 * fs);
   const tb = Math.min(
     pre + Math.floor(0.45 * fs),
     pre + Math.floor(0.7 * rrMean * fs),
-    sm.length - Math.floor(0.2 * fs)
+    sm.length - Math.floor(0.2 * fs),
   );
 
   let Tpk: number | null = null;
@@ -568,7 +623,7 @@ function measurePWave(
   fs: number,
   nBeats: number,
   W_norm: Float64Array[],
-  tm: Float64Array
+  tm: Float64Array,
 ): {
   P: number | null;
   p_amp: number;
@@ -613,17 +668,27 @@ function measurePWave(
       p_pol = "倒置";
     }
 
-    let noiseSqSum = 0;
+    let noiseSqSum = 0,
+      noiseMean = 0;
     let countP = 0;
     for (let r = 0; r < nBeats; r++) {
       for (let c = pa; c < pb; c++) {
         const diff = W_norm[r][c] - tm[c];
         noiseSqSum += diff * diff;
+        noiseMean += diff;
         countP++;
       }
     }
-    const noise_p = Math.sqrt(noiseSqSum / Math.max(1, countP));
-    p_ok = Math.abs(p_amp) > Math.max(0.025, (3 * 1.25 * noise_p) / Math.sqrt(nBeats));
+    const noise_p = Math.sqrt(
+      Math.max(
+        0,
+        noiseSqSum / Math.max(1, countP) -
+          (noiseMean / Math.max(1, countP)) ** 2,
+      ),
+    );
+    p_ok =
+      Math.abs(p_amp) >
+      Math.max(0.025, (3 * 1.25 * noise_p) / Math.sqrt(nBeats));
 
     if (p_ok) {
       let po = P;
@@ -638,4 +703,3 @@ function measurePWave(
 
   return { P, p_amp, p_pol, p_ok, pr };
 }
-

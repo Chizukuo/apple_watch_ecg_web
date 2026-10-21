@@ -109,7 +109,7 @@ export function findPeaksNeurokit(
   avgWindow = 0.75,
   gradThreshWeight = 1.5,
   minLenWeight = 0.4,
-  minDelaySec = 0.3
+  minDelaySec = 0.3,
 ): number[] {
   const grad = gradient(signal);
   const absGrad = new Float64Array(grad.length);
@@ -182,7 +182,10 @@ export function findPeaksNeurokit(
 /**
  * Standard beat detection with 1-second constant extension padding
  */
-export function cleanAndDetect(v: Float64Array, fs: number): { rawPeaks: number[]; clean: Float64Array } {
+export function cleanAndDetect(
+  v: Float64Array,
+  fs: number,
+): { rawPeaks: number[]; clean: Float64Array } {
   const pad = fs;
   const n = v.length;
   const vv = new Float64Array(n + 2 * pad);
@@ -219,7 +222,7 @@ export function detectBeats(
   t: Float64Array,
   v: Float64Array,
   fs: number,
-  removed: [number, number][]
+  removed: [number, number][],
 ): DetectBeatsResult {
   const { rawPeaks, clean } = cleanAndDetect(v, fs);
 
@@ -250,13 +253,32 @@ export function detectBeats(
   const slopeRef = median(slopes);
 
   // 1. Dynamic gap-filling (补检)
-  fillDynamicGaps(keys, cand, clean, slope, t, ampRef, slopeRef, half60, fs, removed);
+  fillDynamicGaps(
+    keys,
+    cand,
+    clean,
+    slope,
+    t,
+    ampRef,
+    slopeRef,
+    half60,
+    fs,
+    removed,
+  );
 
   // 2. Large deflection search (大偏折)
   searchLargeDeflections(cand, clean, t, ampRef, fs, removed);
 
   // 3. Merge duplicate detections within 250 ms & prune weak candidates
-  let beats = pruneAndMergeCandidates(cand, clean, slope, ampRef, slopeRef, half60, fs);
+  let beats = pruneAndMergeCandidates(
+    cand,
+    clean,
+    slope,
+    ampRef,
+    slopeRef,
+    half60,
+    fs,
+  );
 
   // 4. Tall T-wave suppression (高大 T 波)
   beats = suppressTallTWaves(beats, slope, half60, fs);
@@ -283,7 +305,7 @@ function fillDynamicGaps(
   slopeRef: number,
   half60: number,
   fs: number,
-  removed: [number, number][]
+  removed: [number, number][],
 ): void {
   const rr: number[] = [];
   for (let k = 0; k < b.length - 1; k++) {
@@ -311,7 +333,10 @@ function fillDynamicGaps(
 
     if (inAny(t[bestI], removed)) continue;
 
-    if (Math.abs(clean[bestI]) >= 0.4 * ampRef && localMax(slope, bestI, half60) >= 0.25 * slopeRef) {
+    if (
+      Math.abs(clean[bestI]) >= 0.4 * ampRef &&
+      localMax(slope, bestI, half60) >= 0.25 * slopeRef
+    ) {
       const snapped = snap(bestI, clean, fs);
       if (!cand.has(snapped)) {
         cand.set(snapped, "补检");
@@ -330,7 +355,7 @@ function searchLargeDeflections(
   t: Float64Array,
   ampRef: number,
   fs: number,
-  removed: [number, number][]
+  removed: [number, number][],
 ): void {
   const mask = new Uint8Array(clean.length);
   mask.fill(1);
@@ -396,7 +421,7 @@ function pruneAndMergeCandidates(
   ampRef: number,
   slopeRef: number,
   half60: number,
-  fs: number
+  fs: number,
 ): number[] {
   const allCand = Array.from(cand.keys()).sort((a, b) => a - b);
   const min250 = Math.floor(0.25 * fs);
@@ -431,7 +456,7 @@ function suppressTallTWaves(
   beats: number[],
   slope: Float64Array,
   half60: number,
-  fs: number
+  fs: number,
 ): number[] {
   if (beats.length < 5) return beats;
 
@@ -483,4 +508,3 @@ function suppressTallTWaves(
 
   return beats.filter((_, idx) => keep[idx]);
 }
-

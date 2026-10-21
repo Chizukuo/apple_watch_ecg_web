@@ -4,7 +4,7 @@
  */
 
 import { PT_PER_MM, Row, STRIP_SECONDS, WatchInfo } from "../types";
-import { interp, median } from "../dsp";
+import { interp, median, sampleGrid } from "../dsp";
 import { GridStrip, LineSegment, PaintedPath, Point2D } from "./types";
 import { isGray, isRed } from "./graphics";
 
@@ -46,7 +46,9 @@ export function findGridStrips(paintedPaths: PaintedPath[]): GridStrip[] {
     const y1 = Math.max(...b);
 
     const matching = allGraySegs.filter(
-      (s) => Math.min(s.p1.y, s.p2.y) >= y0 - 0.1 && Math.max(s.p1.y, s.p2.y) <= y1 + 0.1
+      (s) =>
+        Math.min(s.p1.y, s.p2.y) >= y0 - 0.1 &&
+        Math.max(s.p1.y, s.p2.y) <= y1 + 0.1,
     );
     if (matching.length === 0) continue;
 
@@ -66,7 +68,7 @@ export function findGridStrips(paintedPaths: PaintedPath[]): GridStrip[] {
  */
 export function findCalPulseHeight(
   paintedPaths: PaintedPath[],
-  strip: GridStrip
+  strip: GridStrip,
 ): number | null {
   for (const p of paintedPaths) {
     if (isGray(p.color, 0, 0.6)) {
@@ -101,17 +103,18 @@ export function extractVectorRows(
   paintedPaths: PaintedPath[],
   strips: GridStrip[],
   watch: WatchInfo,
-  fs: number
+  fs: number,
 ): { rows: Row[]; ptPerMv: number; notes: string[] } {
   const notes: string[] = [];
   const ptPerS = watch.paper_speed_mm_s * PT_PER_MM;
-  const cal = strips.length > 0 ? findCalPulseHeight(paintedPaths, strips[0]) : null;
+  const cal =
+    strips.length > 0 ? findCalPulseHeight(paintedPaths, strips[0]) : null;
   const expect = watch.gain_mm_mv * PT_PER_MM;
   const ptPerMv = cal ? cal : expect;
 
   if (cal && Math.abs(cal - expect) / expect > 0.03) {
     notes.push(
-      `定标方波高度 ${cal.toFixed(1)} pt 与增益 ${watch.gain_mm_mv} mm/mV 不一致，已按定标方波换算`
+      `定标方波高度 ${cal.toFixed(1)} pt 与增益 ${watch.gain_mm_mv} mm/mV 不一致，已按定标方波换算`,
     );
   }
   if (!cal) {
@@ -127,40 +130,25 @@ export function extractVectorRows(
 
     if (Math.abs(stripDur - STRIP_SECONDS) > 0.2) {
       notes.push(
-        `第 ${i + 1} 行网格宽度换算为 ${stripDur.toFixed(2)} 秒（预期 10 秒），请核对纸速`
+        `第 ${i + 1} 行网格宽度换算为 ${stripDur.toFixed(2)} 秒（预期 10 秒），请核对纸速`,
       );
     }
 
     const stripPoints: Point2D[] = [];
     for (const rp of redPaths) {
-      for (const pt of rp.points) {
-        if (s.y0 - 2 <= pt.y && pt.y <= s.y1 + 2) {
-          stripPoints.push(pt);
-        }
-      }
+      const yy = rp.points.map((p) => p.y);
+      const center = (Math.min(...yy) + Math.max(...yy)) / 2;
+      if (s.y0 - 2 <= center && center <= s.y1 + 2 && rp.segs.length >= 4)
+        stripPoints.push(...rp.points);
     }
 
     if (stripPoints.length < 50) continue;
 
-    // Sort by x and remove duplicate points with identical x coordinates while preserving peaks
+    // Match NumPy unique: stable x sort and first duplicate, keeping drawing order.
     stripPoints.sort((a, b) => a.x - b.x);
-    const uniquePoints: Point2D[] = [];
-    const midY = (s.y0 + s.y1) / 2;
-    for (let p = 0; p < stripPoints.length; p++) {
-      if (uniquePoints.length === 0) {
-        uniquePoints.push(stripPoints[p]);
-      } else {
-        const last = uniquePoints[uniquePoints.length - 1];
-        if (stripPoints[p].x > last.x) {
-          uniquePoints.push(stripPoints[p]);
-        } else if (stripPoints[p].x === last.x) {
-          // If identical X, keep the point that deviates more from strip center to preserve true peak/trough
-          if (Math.abs(stripPoints[p].y - midY) > Math.abs(last.y - midY)) {
-            uniquePoints[uniquePoints.length - 1] = stripPoints[p];
-          }
-        }
-      }
-    }
+    const uniquePoints = stripPoints.filter(
+      (p, j) => j === 0 || p.x !== stripPoints[j - 1].x,
+    );
 
     const xs = uniquePoints.map((p) => p.x);
     const ysTrace = uniquePoints.map((p) => p.y);
@@ -168,11 +156,7 @@ export function extractVectorRows(
     const tAbs = xs.map((x) => i * stripDur + (x - s.x0) / ptPerS);
     const tStart = tAbs[0];
     const tEnd = tAbs[tAbs.length - 1];
-    const dt = 1.0 / fs;
-    const count = Math.floor((tEnd - tStart) / dt);
-
-    const tGrid = new Float64Array(count);
-    for (let c = 0; c < count; c++) tGrid[c] = tStart + c * dt;
+    const tGrid = sampleGrid(tStart, tEnd, fs);
 
     const yInterp = interp(tGrid, tAbs, ysTrace);
     const yMed = median(yInterp);

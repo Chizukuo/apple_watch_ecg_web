@@ -1,0 +1,2950 @@
+{
+  "scope": "local source review, synthetic inputs only",
+  "raw_signal_cases": [
+    {
+      "name": "normal",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "fast110",
+      "python": {
+        "rhythm": {
+          "beats": 53,
+          "hr_bpm": 110.0,
+          "hr_nn_bpm": 110.0,
+          "reported_bpm": null,
+          "rr_ms_min": 545.0,
+          "rr_ms_max": 547.0,
+          "n_normal": 53,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 52,
+          "mean_nn_ms": 545.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.4,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.0,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 53,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.082,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 117.0,
+          "qrs_ms": 68.0,
+          "r_amp_mv": 0.86,
+          "s_amp_mv": -0.361,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.023,
+          "st_j60_mv": 0.007,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 365.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 494.0,
+          "qtc_fridericia_ms": 446.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": [
+            "心率 110 > 100：P 波常与上一拍的 T 波重叠，PR 不可靠，未做 PR 提醒"
+          ]
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 53,
+          "hr_bpm": 110,
+          "hr_nn_bpm": 110,
+          "reported_bpm": null,
+          "rr_ms_min": 545,
+          "rr_ms_max": 547,
+          "n_normal": 53,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 52,
+          "mean_nn_ms": 545.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.4,
+          "pnn50_pct": 0,
+          "sd1_ms": 1,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 53,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.082,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 117,
+          "qrs_ms": 68,
+          "r_amp_mv": 0.86,
+          "s_amp_mv": -0.361,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.023,
+          "st_j60_mv": 0.007,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 365,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 494,
+          "qtc_fridericia_ms": 446,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": [
+            "心率 110 > 100：P 波常与上一拍的 T 波重叠，PR 不可靠，未做 PR 提醒"
+          ]
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "fast130",
+      "python": {
+        "rhythm": {
+          "beats": 63,
+          "hr_bpm": 130.0,
+          "hr_nn_bpm": 130.0,
+          "reported_bpm": null,
+          "rr_ms_min": 461.0,
+          "rr_ms_max": 463.0,
+          "n_normal": 63,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 62,
+          "mean_nn_ms": 461.5,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.5,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 63,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.278,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 133.0,
+          "qrs_ms": 68.0,
+          "r_amp_mv": 0.657,
+          "s_amp_mv": -0.565,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.025,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.25,
+          "t_polarity": "直立",
+          "qt_ms": 372.0,
+          "qt_beat_iqr_ms": [
+            368.0,
+            373.0
+          ],
+          "qtc_bazett_ms": 548.0,
+          "qtc_fridericia_ms": 482.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG",
+              "level": "关注",
+              "value": 482.0,
+              "text": "QTc 偏长：482 ms（Fridericia，性别未指定，按男性阈值 450）。单导联测量有误差；若反复出现，或有晕厥、心悸、家族猝死史，或在服用可能延长 QT 的药物，请做 12 导联心电图"
+            }
+          ],
+          "skipped": [
+            "心率 130 > 100：P 波常与上一拍的 T 波重叠，PR 不可靠，未做 PR 提醒"
+          ]
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 63,
+          "hr_bpm": 130,
+          "hr_nn_bpm": 130,
+          "reported_bpm": null,
+          "rr_ms_min": 461,
+          "rr_ms_max": 463,
+          "n_normal": 63,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 62,
+          "mean_nn_ms": 461.5,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.5,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 63,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.278,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 133,
+          "qrs_ms": 68,
+          "r_amp_mv": 0.657,
+          "s_amp_mv": -0.565,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.025,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.25,
+          "t_polarity": "直立",
+          "qt_ms": 372,
+          "qt_beat_iqr_ms": [
+            368,
+            373
+          ],
+          "qtc_bazett_ms": 548,
+          "qtc_fridericia_ms": 482,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG",
+              "level": "关注",
+              "value": 482,
+              "text": "QTc 偏长：482 ms（Fridericia，性别未指定，按男性阈值 450）。单导联测量有误差；若反复出现，或有晕厥、心悸、家族猝死史，或在服用可能延长 QT 的药物，请做 12 导联心电图"
+            }
+          ],
+          "skipped": [
+            "心率 130 > 100：P 波常与上一拍的 T 波重叠，PR 不可靠，未做 PR 提醒"
+          ]
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "longQT",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.304,
+          "t_polarity": "直立",
+          "qt_ms": 429.0,
+          "qt_beat_iqr_ms": [
+            424.0,
+            431.0
+          ],
+          "qtc_bazett_ms": 470.0,
+          "qtc_fridericia_ms": 456.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG",
+              "level": "关注",
+              "value": 470.0,
+              "text": "QTc 偏长：470 ms（Bazett，性别未指定，按男性阈值 450）。单导联测量有误差；若反复出现，或有晕厥、心悸、家族猝死史，或在服用可能延长 QT 的药物，请做 12 导联心电图"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.304,
+          "t_polarity": "直立",
+          "qt_ms": 429,
+          "qt_beat_iqr_ms": [
+            424,
+            431
+          ],
+          "qtc_bazett_ms": 470,
+          "qtc_fridericia_ms": 456,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG",
+              "level": "关注",
+              "value": 470,
+              "text": "QTc 偏长：470 ms（Bazett，性别未指定，按男性阈值 450）。单导联测量有误差；若反复出现，或有晕厥、心悸、家族猝死史，或在服用可能延长 QT 的药物，请做 12 导联心电图"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "markedLongQT",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.941,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 483.0,
+          "qt_beat_iqr_ms": [
+            474.0,
+            481.0
+          ],
+          "qtc_bazett_ms": 529.0,
+          "qtc_fridericia_ms": 513.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG_MARKED",
+              "level": "建议就医",
+              "value": 529.0,
+              "text": "QTc 明显延长：529 ms（Bazett，≥500）。QTc ≥500 ms 与恶性室性心律失常风险显著相关；手表测得的 QT 通常还比 12 导联短。请尽快做 12 导联心电图，并带上正在服用的药物清单（不少药物会延长 QT）"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.941,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 483,
+          "qt_beat_iqr_ms": [
+            474,
+            481
+          ],
+          "qtc_bazett_ms": 529,
+          "qtc_fridericia_ms": 513,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_LONG_MARKED",
+              "level": "建议就医",
+              "value": 529,
+              "text": "QTc 明显延长：529 ms（Bazett，≥500）。QTc ≥500 ms 与恶性室性心律失常风险显著相关；手表测得的 QT 通常还比 12 导联短。请尽快做 12 导联心电图，并带上正在服用的药物清单（不少药物会延长 QT）"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "shortQT",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.02,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 322.0,
+          "qt_beat_iqr_ms": [
+            316.0,
+            321.0
+          ],
+          "qtc_bazett_ms": 353.0,
+          "qtc_fridericia_ms": 342.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_SHORT",
+              "level": "关注",
+              "value": 353.0,
+              "text": "QTc 偏短：353 ms（Bazett，≤360）。手表的 QT 常比 12 导联短 10–25 ms，这个值本身不足以说明问题；若有不明原因晕厥、心悸或家族猝死史，请做 12 导联心电图确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.02,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 322,
+          "qt_beat_iqr_ms": [
+            316,
+            321
+          ],
+          "qtc_bazett_ms": 353,
+          "qtc_fridericia_ms": 342,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_SHORT",
+              "level": "关注",
+              "value": 353,
+              "text": "QTc 偏短：353 ms（Bazett，≤360）。手表的 QT 常比 12 导联短 10–25 ms，这个值本身不足以说明问题；若有不明原因晕厥、心悸或家族猝死史，请做 12 导联心电图确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "markedShortQT",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 68.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.282,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.018,
+          "st_j60_mv": 0.073,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 292.0,
+          "qt_beat_iqr_ms": [
+            286.0,
+            291.0
+          ],
+          "qtc_bazett_ms": 320.0,
+          "qtc_fridericia_ms": 310.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_SHORT_MARKED",
+              "level": "建议就医",
+              "value": 320.0,
+              "text": "QTc 明显偏短：320 ms（Bazett，≤340）。手表的 QT 常比 12 导联短 10–25 ms，且 T 波终点在单导联上容易判早；请用 12 导联心电图确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 68,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.282,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.018,
+          "st_j60_mv": 0.073,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 292,
+          "qt_beat_iqr_ms": [
+            286,
+            291
+          ],
+          "qtc_bazett_ms": 320,
+          "qtc_fridericia_ms": 310,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QTC_SHORT_MARKED",
+              "level": "建议就医",
+              "value": 320,
+              "text": "QTc 明显偏短：320 ms（Bazett，≤340）。手表的 QT 常比 12 导联短 10–25 ms，且 T 波终点在单导联上容易判早；请用 12 导联心电图确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "wideQRS",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 154.0,
+          "qrs_ms": 135.0,
+          "r_amp_mv": 0.945,
+          "s_amp_mv": -0.287,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.008,
+          "st_j60_mv": 0.045,
+          "t_amp_mv": 0.328,
+          "t_polarity": "直立",
+          "qt_ms": 394.0,
+          "qt_beat_iqr_ms": [
+            385.0,
+            392.0
+          ],
+          "qtc_bazett_ms": 432.0,
+          "qtc_fridericia_ms": 419.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QRS_WIDE",
+              "level": "关注",
+              "value": 135.0,
+              "text": "QRS 增宽：135 ms（≥120）。可能是束支传导阻滞或室内传导延迟，也可能是单导联上测量的误差；以前没有发现过的话，请做 12 导联心电图"
+            }
+          ],
+          "skipped": [
+            "QRS 增宽时 ST 段和 T 波的改变多为继发性，未单独做 ST 和 T 波提醒"
+          ]
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 154,
+          "qrs_ms": 135,
+          "r_amp_mv": 0.945,
+          "s_amp_mv": -0.287,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.008,
+          "st_j60_mv": 0.045,
+          "t_amp_mv": 0.328,
+          "t_polarity": "直立",
+          "qt_ms": 394,
+          "qt_beat_iqr_ms": [
+            385,
+            392
+          ],
+          "qtc_bazett_ms": 432,
+          "qtc_fridericia_ms": 419,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "QRS_WIDE",
+              "level": "关注",
+              "value": 135,
+              "text": "QRS 增宽：135 ms（≥120）。可能是束支传导阻滞或室内传导延迟，也可能是单导联上测量的误差；以前没有发现过的话，请做 12 导联心电图"
+            }
+          ],
+          "skipped": [
+            "QRS 增宽时 ST 段和 T 波的改变多为继发性，未单独做 ST 和 T 波提醒"
+          ]
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "longPR",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.058,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 221.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.886,
+          "s_amp_mv": -0.339,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "PR_LONG",
+              "level": "关注",
+              "value": 221.0,
+              "text": "PR 间期延长：221 ms（>200）。可能是一度房室传导阻滞（运动员和年轻人中较常见，多数无害），也可能是 P 波起点判早；请在 12 导联心电图上确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": -0.058,
+          "p_polarity": "倒置",
+          "p_measurable": true,
+          "pr_ms": 221,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.886,
+          "s_amp_mv": -0.339,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.305,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "PR_LONG",
+              "level": "关注",
+              "value": 221,
+              "text": "PR 间期延长：221 ms（>200）。可能是一度房室传导阻滞（运动员和年轻人中较常见，多数无害），也可能是 P 波起点判早；请在 12 导联心电图上确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "shortPR",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.1,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 119.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.282,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.048,
+          "st_j60_mv": -0.006,
+          "t_amp_mv": 0.295,
+          "t_polarity": "直立",
+          "qt_ms": 361.0,
+          "qt_beat_iqr_ms": [
+            353.0,
+            359.0
+          ],
+          "qtc_bazett_ms": 395.0,
+          "qtc_fridericia_ms": 383.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "PR_SHORT",
+              "level": "关注",
+              "value": 119.0,
+              "text": "PR 间期偏短：119 ms（<120）。可能是正常变异，也可能是预激（如 WPW）；有阵发性心动过速的话，请做 12 导联心电图"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.1,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 119,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.282,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.048,
+          "st_j60_mv": -0.006,
+          "t_amp_mv": 0.295,
+          "t_polarity": "直立",
+          "qt_ms": 361,
+          "qt_beat_iqr_ms": [
+            353,
+            359
+          ],
+          "qtc_bazett_ms": 395,
+          "qtc_fridericia_ms": 383,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "PR_SHORT",
+              "level": "关注",
+              "value": 119,
+              "text": "PR 间期偏短：119 ms（<120）。可能是正常变异，也可能是预激（如 WPW）；有阵发性心动过速的话，请做 12 导联心电图"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "STup",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 178.0,
+          "qrs_ms": 72.0,
+          "r_amp_mv": 1.022,
+          "s_amp_mv": -0.142,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": 0.165,
+          "st_j60_mv": 0.231,
+          "t_amp_mv": 0.297,
+          "t_polarity": "直立",
+          "qt_ms": 361.0,
+          "qt_beat_iqr_ms": [
+            353.0,
+            359.0
+          ],
+          "qtc_bazett_ms": 395.0,
+          "qtc_fridericia_ms": 384.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "ST_ELEVATION",
+              "level": "关注",
+              "value": 0.165,
+              "text": "ST 段抬高：J 点 +0.17 mV（≥0.1）。单导联不能诊断；若伴胸痛、胸闷、出冷汗，请立即就医；无症状时也可能是早复极等正常变异"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 178,
+          "qrs_ms": 72,
+          "r_amp_mv": 1.022,
+          "s_amp_mv": -0.142,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": 0.165,
+          "st_j60_mv": 0.231,
+          "t_amp_mv": 0.297,
+          "t_polarity": "直立",
+          "qt_ms": 361,
+          "qt_beat_iqr_ms": [
+            353,
+            359
+          ],
+          "qtc_bazett_ms": 395,
+          "qtc_fridericia_ms": 384,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "ST_ELEVATION",
+              "level": "关注",
+              "value": 0.165,
+              "text": "ST 段抬高：J 点 +0.17 mV（≥0.1）。单导联不能诊断；若伴胸痛、胸闷、出冷汗，请立即就医；无症状时也可能是早复极等正常变异"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "STdown",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.878,
+          "s_amp_mv": -0.394,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.177,
+          "st_j60_mv": -0.181,
+          "t_amp_mv": 0.311,
+          "t_polarity": "直立",
+          "qt_ms": 366.0,
+          "qt_beat_iqr_ms": [
+            358.0,
+            366.0
+          ],
+          "qtc_bazett_ms": 401.0,
+          "qtc_fridericia_ms": 389.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "ST_DEPRESSION",
+              "level": "关注",
+              "value": -0.177,
+              "text": "ST 段压低：J 点 -0.18 mV、J 点后 60 ms -0.18 mV（均 ≤-0.1，呈水平或下斜型）。单导联不能诊断；宽而缓的 S 波（如右束支阻滞）的末段也可能被算作 ST 段。若伴胸痛、胸闷，请立即就医"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.7
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.878,
+          "s_amp_mv": -0.394,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.177,
+          "st_j60_mv": -0.181,
+          "t_amp_mv": 0.311,
+          "t_polarity": "直立",
+          "qt_ms": 366,
+          "qt_beat_iqr_ms": [
+            358,
+            366
+          ],
+          "qtc_bazett_ms": 401,
+          "qtc_fridericia_ms": 389,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "ST_DEPRESSION",
+              "level": "关注",
+              "value": -0.177,
+              "text": "ST 段压低：J 点 -0.18 mV、J 点后 60 ms -0.18 mV（均 ≤-0.1，呈水平或下斜型）。单导联不能诊断；宽而缓的 S 波（如右束支阻滞）的末段也可能被算作 ST 段。若伴胸痛、胸闷，请立即就医"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "Tinverted",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.002,
+          "t_amp_mv": -0.294,
+          "t_polarity": "倒置",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            354.0,
+            360.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "T_INVERSION",
+              "level": "关注",
+              "value": -0.294,
+              "text": "T 波倒置：-0.29 mV，而 QRS 主波向上。导联 I 中 T 波通常直立；请在 12 导联心电图上确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.002,
+          "t_amp_mv": -0.294,
+          "t_polarity": "倒置",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            354,
+            360
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [
+            {
+              "code": "T_INVERSION",
+              "level": "关注",
+              "value": -0.294,
+              "text": "T 波倒置：-0.29 mV，而 QRS 主波向上。导联 I 中 T 波通常直立；请在 12 导联心电图上确认"
+            }
+          ],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "flatT",
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.044,
+          "t_polarity": "直立",
+          "qt_ms": 470.0,
+          "qt_beat_iqr_ms": [
+            445.0,
+            469.0
+          ],
+          "qtc_bazett_ms": 515.0,
+          "qtc_fridericia_ms": 500.0,
+          "qt_reliable": false
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": [
+            "T 波太低（0.044 mV < 0.08），T 终点不可靠，未做 QTc 提醒"
+          ]
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.003,
+          "t_amp_mv": 0.044,
+          "t_polarity": "直立",
+          "qt_ms": 470,
+          "qt_beat_iqr_ms": [
+            445,
+            469
+          ],
+          "qtc_bazett_ms": 515,
+          "qtc_fridericia_ms": 500,
+          "qt_reliable": false
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": [
+            "T 波太低（0.044 mV < 0.08），T 终点不可靠，未做 QTc 提醒"
+          ]
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    },
+    {
+      "name": "tallT",
+      "python": {
+        "rhythm": {
+          "beats": 28,
+          "hr_bpm": 58.0,
+          "hr_nn_bpm": 58.0,
+          "reported_bpm": null,
+          "rr_ms_min": 1033.0,
+          "rr_ms_max": 1035.0,
+          "n_normal": 28,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 27,
+          "mean_nn_ms": 1034.5,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.2,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 28,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.099,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 68.0,
+          "r_amp_mv": 0.941,
+          "s_amp_mv": -0.279,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.024,
+          "st_j60_mv": 0.004,
+          "t_amp_mv": 1.202,
+          "t_polarity": "直立",
+          "qt_ms": 424.0,
+          "qt_beat_iqr_ms": [
+            422.0,
+            425.0
+          ],
+          "qtc_bazett_ms": 417.0,
+          "qtc_fridericia_ms": 419.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 28,
+          "hr_bpm": 58,
+          "hr_nn_bpm": 58,
+          "reported_bpm": null,
+          "rr_ms_min": 1033,
+          "rr_ms_max": 1035,
+          "n_normal": 28,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 27,
+          "mean_nn_ms": 1034.5,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.2,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 28,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.099,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 68,
+          "r_amp_mv": 0.941,
+          "s_amp_mv": -0.279,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.024,
+          "st_j60_mv": 0.004,
+          "t_amp_mv": 1.202,
+          "t_polarity": "直立",
+          "qt_ms": 424,
+          "qt_beat_iqr_ms": [
+            422,
+            425
+          ],
+          "qtc_bazett_ms": 417,
+          "qtc_fridericia_ms": 419,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "differences": [],
+      "svgNormalClaim": false
+    }
+  ],
+  "pdf_cases": [
+    {
+      "name": "normal",
+      "python_samples": 15175,
+      "web_samples": 15175,
+      "python_end": 29.99804682413737,
+      "web_end": 29.99804682413737,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": 72,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": 72,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    },
+    {
+      "name": "combined_contents",
+      "python_samples": 15175,
+      "web_samples": 15175,
+      "python_end": 29.99804682413737,
+      "web_end": 29.99804682413737,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": 72,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": 72,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    },
+    {
+      "name": "compressed_leading_newline",
+      "python_samples": 15175,
+      "web_samples": 15175,
+      "python_end": 29.99804682413737,
+      "web_end": 29.99804682413737,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": 72,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": 72,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    },
+    {
+      "name": "split_contents",
+      "python_samples": 15175,
+      "web_samples": 15175,
+      "python_end": 29.99804682413737,
+      "web_end": 29.99804682413737,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": 72,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363.0,
+          "qt_beat_iqr_ms": [
+            355.0,
+            362.0
+          ],
+          "qtc_bazett_ms": 398.0,
+          "qtc_fridericia_ms": 386.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": 72,
+          "rr_ms_min": 832,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.4,
+          "sdnn_ms": 0.9,
+          "rmssd_ms": 1.6,
+          "pnn50_pct": 0,
+          "sd1_ms": 1.1,
+          "sd2_ms": 0.6
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 180,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.942,
+          "s_amp_mv": -0.283,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.038,
+          "st_j60_mv": 0.005,
+          "t_amp_mv": 0.306,
+          "t_polarity": "直立",
+          "qt_ms": 363,
+          "qt_beat_iqr_ms": [
+            355,
+            362
+          ],
+          "qtc_bazett_ms": 398,
+          "qtc_fridericia_ms": 386,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    }
+  ],
+  "other_sampling_rates": [
+    {
+      "fs": 256,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 832.0,
+          "rr_ms_max": 836.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 1.9,
+          "rmssd_ms": 3.2,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 2.3,
+          "sd2_ms": 1.3
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.1,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 184.0,
+          "qrs_ms": 66.0,
+          "r_amp_mv": 0.932,
+          "s_amp_mv": -0.271,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.036,
+          "st_j60_mv": 0.007,
+          "t_amp_mv": 0.31,
+          "t_polarity": "直立",
+          "qt_ms": 360.0,
+          "qt_beat_iqr_ms": [
+            353.0,
+            361.0
+          ],
+          "qtc_bazett_ms": 395.0,
+          "qtc_fridericia_ms": 383.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 832,
+          "rr_ms_max": 836,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 1.9,
+          "rmssd_ms": 3.2,
+          "pnn50_pct": 0,
+          "sd1_ms": 2.3,
+          "sd2_ms": 1.3
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.1,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 184,
+          "qrs_ms": 66,
+          "r_amp_mv": 0.932,
+          "s_amp_mv": -0.271,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.036,
+          "st_j60_mv": 0.007,
+          "t_amp_mv": 0.31,
+          "t_polarity": "直立",
+          "qt_ms": 360,
+          "qt_beat_iqr_ms": [
+            353,
+            361
+          ],
+          "qtc_bazett_ms": 395,
+          "qtc_fridericia_ms": 383,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    },
+    {
+      "fs": 1000,
+      "python": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72.0,
+          "hr_nn_bpm": 72.0,
+          "reported_bpm": null,
+          "rr_ms_min": 833.0,
+          "rr_ms_max": 834.0,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 0.5,
+          "rmssd_ms": 0.8,
+          "pnn50_pct": 0.0,
+          "sd1_ms": 0.6,
+          "sd2_ms": 0.3
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 178.0,
+          "qrs_ms": 69.0,
+          "r_amp_mv": 0.946,
+          "s_amp_mv": -0.287,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.025,
+          "st_j60_mv": 0.004,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 362.0,
+          "qt_beat_iqr_ms": [
+            356.0,
+            361.0
+          ],
+          "qtc_bazett_ms": 396.0,
+          "qtc_fridericia_ms": 384.0,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "web": {
+        "rhythm": {
+          "beats": 35,
+          "hr_bpm": 72,
+          "hr_nn_bpm": 72,
+          "reported_bpm": null,
+          "rr_ms_min": 833,
+          "rr_ms_max": 834,
+          "n_normal": 35,
+          "n_premature_same": 0,
+          "n_premature_diff": 0,
+          "n_odd": 0,
+          "n_removed": 0,
+          "pauses": [],
+          "compensatory_pauses": [],
+          "bigeminy_start_s": null,
+          "rr_alternation_start_s": []
+        },
+        "hrv": {
+          "n_nn": 34,
+          "mean_nn_ms": 833.3,
+          "sdnn_ms": 0.5,
+          "rmssd_ms": 0.8,
+          "pnn50_pct": 0,
+          "sd1_ms": 0.6,
+          "sd2_ms": 0.3
+        },
+        "morphology": {
+          "template_beats": 35,
+          "template_corr_threshold": 0.9,
+          "p_amp_mv": 0.098,
+          "p_polarity": "直立",
+          "p_measurable": true,
+          "pr_ms": 178,
+          "qrs_ms": 69,
+          "r_amp_mv": 0.946,
+          "s_amp_mv": -0.287,
+          "amplitude_is_lower_bound": false,
+          "st_j_mv": -0.025,
+          "st_j60_mv": 0.004,
+          "t_amp_mv": 0.303,
+          "t_polarity": "直立",
+          "qt_ms": 362,
+          "qt_beat_iqr_ms": [
+            356,
+            361
+          ],
+          "qtc_bazett_ms": 396,
+          "qtc_fridericia_ms": 384,
+          "qt_reliable": true
+        },
+        "morphology_alerts": {
+          "sex": "unknown",
+          "placement": "wrist",
+          "alerts": [],
+          "skipped": []
+        }
+      },
+      "error": null,
+      "differences": []
+    }
+  ],
+  "sampling_metadata": {
+    "python_fs": 512,
+    "web": {
+      "samples": 15175,
+      "start": 0.3613280741373698,
+      "end": 29.99804682413737,
+      "fs": 512,
+      "watch": {
+        "recorded_at": "2026-10-13 11:25",
+        "age_at_recording": 26,
+        "age_shown": 26,
+        "classification": "窦性心律",
+        "category": "sinus",
+        "reported_bpm": 72,
+        "summary_text": "此心电图未显示房颤迹象。",
+        "symptoms": null,
+        "paper_speed_mm_s": 25,
+        "gain_mm_mv": 10,
+        "sampling_rate_hz": 9999,
+        "lead_label": "导联I",
+        "device_model": "Watch8,5",
+        "ios_version": "27.0.1",
+        "watchos_version": "27.0.1",
+        "algorithm_version": 2,
+        "exported_at": "2026-10-13T03:30:49.000Z",
+        "ios_build": "24A446"
+      },
+      "identity_present": {
+        "name": true,
+        "dob": true
+      }
+    }
+  },
+  "dsp": {
+    "highpass_max_abs_error": 4.197753256107717e-13,
+    "highpass_middle_max_abs_error": 4.197753256107717e-13,
+    "clean_max_abs_error": 4.18554080283684e-13,
+    "maximum_filter_even_mismatch_count": 0
+  },
+  "ui": {
+    "syntaxError": null,
+    "cases": [
+      {
+        "name": "normal",
+        "badge": "已评估项目未触发异常提示",
+        "qtc": "已评估，未触发提醒",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "boundary450",
+        "badge": "检出节律或形态提示",
+        "qtc": "关注",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "boundary360",
+        "badge": "检出节律或形态提示",
+        "qtc": "关注",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "unreliableQT",
+        "badge": "部分项目未评估或可信度受限",
+        "qtc": "不可靠 / 未评估",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "generic_exclusion",
+        "badge": "已评估项目未触发异常提示",
+        "qtc": "已评估，未触发提醒",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "sinus_with_premature",
+        "badge": "已评估项目未触发异常提示",
+        "qtc": "已评估，未触发提醒",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "odd_only",
+        "badge": "检出节律或形态提示",
+        "qtc": "已评估，未触发提醒",
+        "pr": "已评估，未触发提醒",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      },
+      {
+        "name": "fast_formula",
+        "badge": "部分项目未评估或可信度受限",
+        "qtc": "已评估，未触发提醒",
+        "pr": "不可靠 / 未评估",
+        "ectopic": "未见早搏",
+        "rmssd": "0.0"
+      }
+    ]
+  },
+  "api": [
+    {
+      "params": {
+        "format": "json"
+      },
+      "status": 200,
+      "identity_present": false,
+      "exclude": [],
+      "alert_options": {
+        "sex": "unknown",
+        "placement": "wrist"
+      },
+      "top_level_keys": [
+        "code",
+        "schema_version",
+        "tool_version",
+        "record_id",
+        "source",
+        "watch",
+        "rhythm",
+        "hrv",
+        "morphology",
+        "quality",
+        "flags",
+        "notes",
+        "beats",
+        "morphology_alerts",
+        "assessment",
+        "summary",
+        "calibrated",
+        "coverage",
+        "svg"
+      ],
+      "alerts_example_works": false
+    },
+    {
+      "params": {
+        "format": "json",
+        "exclude": "bad"
+      },
+      "status": 400,
+      "identity_present": false,
+      "exclude": null,
+      "alert_options": {
+        "sex": null,
+        "placement": null
+      },
+      "top_level_keys": [
+        "code",
+        "error"
+      ],
+      "alerts_example_works": false
+    },
+    {
+      "params": {
+        "format": "json",
+        "exclude": "0-2junk"
+      },
+      "status": 400,
+      "identity_present": false,
+      "exclude": null,
+      "alert_options": {
+        "sex": null,
+        "placement": null
+      },
+      "top_level_keys": [
+        "code",
+        "error"
+      ],
+      "alerts_example_works": false
+    },
+    {
+      "params": {
+        "format": "json",
+        "sex": "M",
+        "placement": "chest"
+      },
+      "status": 400,
+      "identity_present": false,
+      "exclude": null,
+      "alert_options": {
+        "sex": null,
+        "placement": null
+      },
+      "top_level_keys": [
+        "code",
+        "error"
+      ],
+      "alerts_example_works": false
+    }
+  ],
+  "readme_alert_example": {
+    "status": 200,
+    "data_get_alerts": null,
+    "actual_alert_codes": [
+      "QTC_LONG_MARKED"
+    ]
+  },
+  "malformed_multipart": {
+    "status": 400,
+    "cache_control": "no-store",
+    "body": {
+      "code": 400,
+      "error": "无效的 multipart/form-data 表单或 boundary"
+    }
+  }
+}

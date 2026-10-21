@@ -34,7 +34,9 @@ describe("Clinical Morphology Alerts Logic", () => {
     // @ts-expect-error invalid sex
     expect(() => morphologyAlerts(baseMorphology, 70, "other")).toThrow(/sex/);
     // @ts-expect-error invalid placement
-    expect(() => morphologyAlerts(baseMorphology, 70, "male", "chest")).toThrow(/placement/);
+    expect(() => morphologyAlerts(baseMorphology, 70, "male", "chest")).toThrow(
+      /placement/,
+    );
   });
 
   describe("QTc evaluation rules", () => {
@@ -47,7 +49,9 @@ describe("Clinical Morphology Alerts Logic", () => {
 
       // At HR 75: Bazett is 510 -> QTC_LONG_MARKED
       const resLow = morphologyAlerts(mo, 75);
-      expect(resLow.alerts.some((a) => a.code === "QTC_LONG_MARKED")).toBe(true);
+      expect(resLow.alerts.some((a) => a.code === "QTC_LONG_MARKED")).toBe(
+        true,
+      );
 
       // At HR 105: Fridericia is 440 -> Normal (<450)
       const resHigh = morphologyAlerts(mo, 105);
@@ -80,18 +84,35 @@ describe("Clinical Morphology Alerts Logic", () => {
 
       const moMarked = { ...baseMorphology, qtc_bazett_ms: 320 };
       const resMarked = morphologyAlerts(moMarked, 70);
-      expect(resMarked.alerts.some((a) => a.code === "QTC_SHORT_MARKED")).toBe(true);
+      expect(resMarked.alerts.some((a) => a.code === "QTC_SHORT_MARKED")).toBe(
+        true,
+      );
     });
 
     it("skips QT when T wave is flat or unreliable", () => {
       const moNull = { ...baseMorphology, qtc_bazett_ms: null };
-      expect(morphologyAlerts(moNull, 70).skipped.some((s) => s.includes("T 波终点未能测出"))).toBe(true);
+      expect(
+        morphologyAlerts(moNull, 70).skipped.some((s) =>
+          s.includes("T 波终点未能测出"),
+        ),
+      ).toBe(true);
 
       const moFlatT = { ...baseMorphology, t_amp_mv: 0.05 };
-      expect(morphologyAlerts(moFlatT, 70).skipped.some((s) => s.includes("T 波太低"))).toBe(true);
+      expect(
+        morphologyAlerts(moFlatT, 70).skipped.some((s) =>
+          s.includes("T 波太低"),
+        ),
+      ).toBe(true);
 
-      const moHighIqr = { ...baseMorphology, qt_beat_iqr_ms: [350, 400] as [number, number] };
-      expect(morphologyAlerts(moHighIqr, 70).skipped.some((s) => s.includes("逐拍 QT 波动太大"))).toBe(true);
+      const moHighIqr = {
+        ...baseMorphology,
+        qt_beat_iqr_ms: [350, 400] as [number, number],
+      };
+      expect(
+        morphologyAlerts(moHighIqr, 70).skipped.some((s) =>
+          s.includes("逐拍 QT 波动太大"),
+        ),
+      ).toBe(true);
     });
   });
 
@@ -104,18 +125,30 @@ describe("Clinical Morphology Alerts Logic", () => {
 
     it("flags PR_LONG and PR_SHORT", () => {
       const moLong = { ...baseMorphology, pr_ms: 220 };
-      expect(morphologyAlerts(moLong, 70).alerts.some((a) => a.code === "PR_LONG")).toBe(true);
+      expect(
+        morphologyAlerts(moLong, 70).alerts.some((a) => a.code === "PR_LONG"),
+      ).toBe(true);
 
       const moShort = { ...baseMorphology, pr_ms: 110 };
-      expect(morphologyAlerts(moShort, 70).alerts.some((a) => a.code === "PR_SHORT")).toBe(true);
+      expect(
+        morphologyAlerts(moShort, 70).alerts.some((a) => a.code === "PR_SHORT"),
+      ).toBe(true);
     });
 
     it("skips PR when P wave is not measurable or HR > 110", () => {
       const moNoP = { ...baseMorphology, p_measurable: false, pr_ms: null };
-      expect(morphologyAlerts(moNoP, 70).skipped.some((s) => s.includes("P 波不可测"))).toBe(true);
+      expect(
+        morphologyAlerts(moNoP, 70).skipped.some((s) =>
+          s.includes("P 波不可测"),
+        ),
+      ).toBe(true);
 
       const moTachy = { ...baseMorphology, pr_ms: 220 };
-      expect(morphologyAlerts(moTachy, 115).skipped.some((s) => s.includes("P 波常与上一拍的 T 波重叠"))).toBe(true);
+      expect(
+        morphologyAlerts(moTachy, 115).skipped.some((s) =>
+          s.includes("P 波常与上一拍的 T 波重叠"),
+        ),
+      ).toBe(true);
     });
   });
 
@@ -123,7 +156,9 @@ describe("Clinical Morphology Alerts Logic", () => {
     it("skips ST and T evaluation when placement is not wrist", () => {
       const mo = { ...baseMorphology, st_j_mv: 0.2 };
       const res = morphologyAlerts(mo, 70, "male", "other");
-      expect(res.skipped.some((s) => s.includes("记录时手表不在手腕上"))).toBe(true);
+      expect(res.skipped.some((s) => s.includes("记录时手表不在手腕上"))).toBe(
+        true,
+      );
       expect(res.alerts.some((a) => a.code === "ST_ELEVATION")).toBe(false);
     });
 
@@ -131,7 +166,11 @@ describe("Clinical Morphology Alerts Logic", () => {
       const mo = { ...baseMorphology, qrs_ms: 130, st_j_mv: 0.2 };
       const res = morphologyAlerts(mo, 70);
       expect(res.alerts.some((a) => a.code === "QRS_WIDE")).toBe(true);
-      expect(res.skipped.some((s) => s.includes("QRS 增宽时 ST 段和 T 波的改变多为继发性"))).toBe(true);
+      expect(
+        res.skipped.some((s) =>
+          s.includes("QRS 增宽时 ST 段和 T 波的改变多为继发性"),
+        ),
+      ).toBe(true);
       expect(res.alerts.some((a) => a.code === "ST_ELEVATION")).toBe(false);
     });
 
@@ -144,11 +183,23 @@ describe("Clinical Morphology Alerts Logic", () => {
     it("detects ST_DEPRESSION only if both J and J+60 are <= -0.1 mV", () => {
       // Both depressed -> alert
       const moDep = { ...baseMorphology, st_j_mv: -0.12, st_j60_mv: -0.11 };
-      expect(morphologyAlerts(moDep, 70).alerts.some((a) => a.code === "ST_DEPRESSION")).toBe(true);
+      expect(
+        morphologyAlerts(moDep, 70).alerts.some(
+          (a) => a.code === "ST_DEPRESSION",
+        ),
+      ).toBe(true);
 
       // J depressed but J+60 recovered (upsloping) -> no alert
-      const moUpsloping = { ...baseMorphology, st_j_mv: -0.12, st_j60_mv: -0.04 };
-      expect(morphologyAlerts(moUpsloping, 70).alerts.some((a) => a.code === "ST_DEPRESSION")).toBe(false);
+      const moUpsloping = {
+        ...baseMorphology,
+        st_j_mv: -0.12,
+        st_j60_mv: -0.04,
+      };
+      expect(
+        morphologyAlerts(moUpsloping, 70).alerts.some(
+          (a) => a.code === "ST_DEPRESSION",
+        ),
+      ).toBe(false);
     });
 
     it("detects T_INVERSION when T is inverted and QRS net dominant upright", () => {
@@ -159,7 +210,11 @@ describe("Clinical Morphology Alerts Logic", () => {
         r_amp_mv: 1.2,
         s_amp_mv: -0.3,
       };
-      expect(morphologyAlerts(moInv, 70).alerts.some((a) => a.code === "T_INVERSION")).toBe(true);
+      expect(
+        morphologyAlerts(moInv, 70).alerts.some(
+          (a) => a.code === "T_INVERSION",
+        ),
+      ).toBe(true);
 
       // If QRS is primarily negative (R <= |S|), inverted T is concordant (no T_INVERSION alert)
       const moNegativeQrs = {
@@ -167,7 +222,11 @@ describe("Clinical Morphology Alerts Logic", () => {
         r_amp_mv: 0.2,
         s_amp_mv: -0.9,
       };
-      expect(morphologyAlerts(moNegativeQrs, 70).alerts.some((a) => a.code === "T_INVERSION")).toBe(false);
+      expect(
+        morphologyAlerts(moNegativeQrs, 70).alerts.some(
+          (a) => a.code === "T_INVERSION",
+        ),
+      ).toBe(false);
     });
 
     it("appends low-confidence tail when template beats < 3", () => {

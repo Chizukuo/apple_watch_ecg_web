@@ -3,7 +3,15 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { GraphicsState, LineSegment, Matrix, PaintedPath, Point2D } from "./types";
+import { contentTokens } from "./content";
+import { AnalysisError } from "../types";
+import {
+  GraphicsState,
+  LineSegment,
+  Matrix,
+  PaintedPath,
+  Point2D,
+} from "./types";
 
 export function identityMatrix(): Matrix {
   return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 };
@@ -26,13 +34,22 @@ export function multiplyMatrix(m2: Matrix, m1: Matrix): Matrix {
 /**
  * Transforms point (x, y) by matrix and converts to top-down page coordinates.
  */
-export function transformPoint(m: Matrix, x: number, y: number, pageHeight: number): Point2D {
+export function transformPoint(
+  m: Matrix,
+  x: number,
+  y: number,
+  pageHeight: number,
+): Point2D {
   const xPdf = m.a * x + m.c * y + m.e;
   const yPdf = m.b * x + m.d * y + m.f;
-  return { x: xPdf, y: pageHeight - yPdf };
+  return { x: Math.fround(xPdf), y: Math.fround(pageHeight - yPdf) };
 }
 
-export function isGray(c: [number, number, number], lo: number, hi: number): boolean {
+export function isGray(
+  c: [number, number, number],
+  lo: number,
+  hi: number,
+): boolean {
   const max = Math.max(...c);
   const min = Math.min(...c);
   return max - min < 0.03 && c[0] >= lo && c[0] <= hi;
@@ -45,8 +62,11 @@ export function isRed(c: [number, number, number]): boolean {
 /**
  * Extracts vector line segments from raw PDF stream tokens with CTM affine support
  */
-export function extractPaintedPaths(streamStr: string, pageHeight = 612): PaintedPath[] {
-  const tokens = streamStr.match(/\S+/g) || [];
+export function extractPaintedPaths(
+  streamStr: string,
+  pageHeight = 612,
+): PaintedPath[] {
+  const tokens = contentTokens(streamStr);
   const paintedPaths: PaintedPath[] = [];
 
   let state: GraphicsState = {
@@ -60,10 +80,30 @@ export function extractPaintedPaths(streamStr: string, pageHeight = 612): Painte
   let pathSegs: LineSegment[] = [];
   let pathPoints: Point2D[] = [];
 
+  let inText = false;
   for (let i = 0; i < tokens.length; i++) {
     const tok = tokens[i];
+    if (tok === "BT") {
+      inText = true;
+      continue;
+    }
+    if (tok === "ET") {
+      inText = false;
+      continue;
+    }
+    if (inText) continue;
+    if (
+      stateStack.length > 128 ||
+      paintedPaths.length > 100000 ||
+      pathPoints.length > 100000
+    )
+      throw new AnalysisError("PDF 图形结构过于复杂");
 
-    if (tok === "q") {
+    if (tok === "n") {
+      pathSegs = [];
+      pathPoints = [];
+      curPt = null;
+    } else if (tok === "q") {
       stateStack.push({
         ctm: { ...state.ctm },
         strokeColor: [...state.strokeColor],
@@ -80,7 +120,14 @@ export function extractPaintedPaths(streamStr: string, pageHeight = 612): Painte
       const d = parseFloat(tokens[i - 3]);
       const e = parseFloat(tokens[i - 2]);
       const f = parseFloat(tokens[i - 1]);
-      if (!isNaN(a) && !isNaN(b) && !isNaN(c) && !isNaN(d) && !isNaN(e) && !isNaN(f)) {
+      if (
+        !isNaN(a) &&
+        !isNaN(b) &&
+        !isNaN(c) &&
+        !isNaN(d) &&
+        !isNaN(e) &&
+        !isNaN(f)
+      ) {
         state.ctm = multiplyMatrix({ a, b, c, d, e, f }, state.ctm);
       }
     } else if (tok === "RG") {

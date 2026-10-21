@@ -6,10 +6,29 @@
 import { DEFAULT_FS, IdentityInfo, WatchInfo } from "../types";
 
 const MONTHS: Record<string, number> = {
-  jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
-  jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12,
-  january: 1, february: 2, march: 3, april: 4, june: 6,
-  july: 7, august: 8, september: 9, october: 10, november: 11, december: 12,
+  jan: 1,
+  feb: 2,
+  mar: 3,
+  apr: 4,
+  may: 5,
+  jun: 6,
+  jul: 7,
+  aug: 8,
+  sep: 9,
+  oct: 10,
+  nov: 11,
+  dec: 12,
+  january: 1,
+  february: 2,
+  march: 3,
+  april: 4,
+  june: 6,
+  july: 7,
+  august: 8,
+  september: 9,
+  october: 10,
+  november: 11,
+  december: 12,
 };
 
 function parseMonthDay(a: string, b: string): [number | null, number | null] {
@@ -17,14 +36,16 @@ function parseMonthDay(a: string, b: string): [number | null, number | null] {
   const bLow = b.toLowerCase();
   if (aLow in MONTHS && /^\d+$/.test(b)) return [MONTHS[aLow], parseInt(b, 10)];
   if (bLow in MONTHS && /^\d+$/.test(a)) return [MONTHS[bLow], parseInt(a, 10)];
-  if (/^\d+$/.test(a) && /^\d+$/.test(b)) return [parseInt(a, 10), parseInt(b, 10)];
+  if (/^\d+$/.test(a) && /^\d+$/.test(b))
+    return [parseInt(a, 10), parseInt(b, 10)];
   return [null, null];
 }
 
 function adjust12Hour(hour: number, period: string | null | undefined): number {
   if (!period) return hour;
   const p = period.toUpperCase();
-  if (p === "下午" || p === "晚上" || p === "PM") return hour < 12 ? hour + 12 : hour;
+  if (p === "下午" || p === "晚上" || p === "PM")
+    return hour < 12 ? hour + 12 : hour;
   if (p === "上午" || p === "凌晨" || p === "AM") return hour === 12 ? 0 : hour;
   if (p === "中午") return hour < 11 ? hour + 12 : hour;
   return hour;
@@ -33,7 +54,7 @@ function adjust12Hour(hour: number, period: string | null | undefined): number {
 export function parseRecDatetime(text: string): Date | null {
   // 1. Chinese format
   const m1 = text.match(
-    /(?:记录时间|記錄時間)[:：]?\s*(\d{4})年(\d{1,2})月(\d{1,2})日\s*(上午|下午|凌晨|中午|晚上|AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(上午|下午|AM|PM))?/i
+    /(?:记录时间|記錄時間)[:：]?\s*(\d{4})年(\d{1,2})月(\d{1,2})日\s*(上午|下午|凌晨|中午|晚上|AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(上午|下午|AM|PM))?/i,
   );
   if (m1) {
     const y = parseInt(m1[1], 10);
@@ -49,7 +70,7 @@ export function parseRecDatetime(text: string): Date | null {
 
   // 2. English format
   const m2 = text.match(
-    /(?:Recorded|Date)[:：]?\s*([A-Za-z]+|\d{1,2})[,\s]+([A-Za-z]+|\d{1,2})[,\s]+(\d{4})\s*(?:at\s*)?(AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(AM|PM))?/i
+    /(?:Recorded|Date)[:：]?\s*([A-Za-z]+|\d{1,2})[,\s]+([A-Za-z]+|\d{1,2})[,\s]+(\d{4})\s*(?:at\s*)?(AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(AM|PM))?/i,
   );
   if (m2) {
     const [month, day] = parseMonthDay(m2[1], m2[2]);
@@ -64,7 +85,7 @@ export function parseRecDatetime(text: string): Date | null {
 
   // 3. ISO format
   const m3 = text.match(
-    /(?:Recorded|记录时间|記錄時間|Date)?[:：]?\s*(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\s*(?:at\s*)?(上午|下午|AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(上午|下午|AM|PM))?/i
+    /(?:Recorded|记录时间|記錄時間|Date)?[:：]?\s*(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\s*(?:at\s*)?(上午|下午|AM|PM)?\s*(\d{1,2})[:：](\d{2})(?:\s*(上午|下午|AM|PM))?/i,
   );
   if (m3) {
     const y = parseInt(m3[1], 10);
@@ -79,13 +100,21 @@ export function parseRecDatetime(text: string): Date | null {
 }
 
 export function parseDob(text: string): Date | null {
-  const m1 = text.match(/(?:出生日期|出生年月)[:：]?\s*(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  const m1 = text.match(
+    /(?:出生日期|出生年月)[:：]?\s*(\d{4})年(\d{1,2})月(\d{1,2})日/,
+  );
   if (m1) {
-    return new Date(Date.UTC(parseInt(m1[1], 10), parseInt(m1[2], 10) - 1, parseInt(m1[3], 10)));
+    return new Date(
+      Date.UTC(
+        parseInt(m1[1], 10),
+        parseInt(m1[2], 10) - 1,
+        parseInt(m1[3], 10),
+      ),
+    );
   }
 
   const m2 = text.match(
-    /(?:Date of [Bb]irth|DOB)[:：]?\s*([A-Za-z]+|\d{1,2})[,\s]+([A-Za-z]+|\d{1,2})[,\s]+(\d{4})/i
+    /(?:Date of [Bb]irth|DOB)[:：]?\s*([A-Za-z]+|\d{1,2})[,\s]+([A-Za-z]+|\d{1,2})[,\s]+(\d{4})/i,
   );
   if (m2) {
     const [mo, d] = parseMonthDay(m2[1], m2[2]);
@@ -94,9 +123,17 @@ export function parseDob(text: string): Date | null {
     }
   }
 
-  const m3 = text.match(/(?:Date of [Bb]irth|DOB|出生日期)[:：]?\s*(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/i);
+  const m3 = text.match(
+    /(?:Date of [Bb]irth|DOB|出生日期)[:：]?\s*(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/i,
+  );
   if (m3) {
-    return new Date(Date.UTC(parseInt(m3[1], 10), parseInt(m3[2], 10) - 1, parseInt(m3[3], 10)));
+    return new Date(
+      Date.UTC(
+        parseInt(m3[1], 10),
+        parseInt(m3[2], 10) - 1,
+        parseInt(m3[3], 10),
+      ),
+    );
   }
   return null;
 }
@@ -114,7 +151,11 @@ export function watchCategory(label: string | null | undefined): string {
   ) {
     return label.includes("高") || lbl.includes("high") ? "afib_high" : "afib";
   }
-  if (label.includes("窦性") || label.includes("竇性") || lbl.includes("sinus")) {
+  if (
+    label.includes("窦性") ||
+    label.includes("竇性") ||
+    lbl.includes("sinus")
+  ) {
     return "sinus";
   }
   if (
@@ -160,7 +201,10 @@ export function watchCategory(label: string | null | undefined): string {
 /**
  * Parses decoded multiline text into structured WatchInfo and IdentityInfo.
  */
-export function parsePdfText(text: string): { watch: WatchInfo; identity: IdentityInfo } {
+export function parsePdfText(text: string): {
+  watch: WatchInfo;
+  identity: IdentityInfo;
+} {
   const lines = text
     .split(/\r?\n/)
     .map((l) => l.trim())
@@ -221,7 +265,9 @@ export function parsePdfText(text: string): { watch: WatchInfo; identity: Identi
 
   // Age shown in parentheses
   const mAge =
-    text.match(/(?:出生日期|Date of [Bb]irth|DOB)[^\n]*[（(]\s*(\d+)\s*(?:岁|歲|years? old|yo|yr)?\s*[)）]/i) ||
+    text.match(
+      /(?:出生日期|Date of [Bb]irth|DOB)[^\n]*[（(]\s*(\d+)\s*(?:岁|歲|years? old|yo|yr)?\s*[)）]/i,
+    ) ||
     text.match(/[（(]\s*(\d+)\s*(?:岁|歲|years? old|yo|yr)\s*[)）]/i) ||
     text.match(/[（(]\s*(\d+)\s*岁\s*[)）]/);
   if (mAge) {
@@ -259,12 +305,15 @@ export function parsePdfText(text: string): { watch: WatchInfo; identity: Identi
   const mModel = text.match(/(Watch\d+,\d+)/i);
   if (mModel) watch.device_model = mModel[1];
 
-  const mAlgo = text.match(/(?:算法版本|演算法版本|Algorithm\s*[Vv]ersion)\s*(\d+)/i);
+  const mAlgo = text.match(
+    /(?:算法版本|演算法版本|Algorithm\s*[Vv]ersion)\s*(\d+)/i,
+  );
   if (mAlgo) watch.algorithm_version = parseInt(mAlgo[1], 10);
 
   // Classification line: "窦性心律 — 平均64次/分"
   for (const ln of lines) {
-    const hasRate = ln.includes("次/分") || ln.includes("次/分鐘") || /bpm/i.test(ln);
+    const hasRate =
+      ln.includes("次/分") || ln.includes("次/分鐘") || /bpm/i.test(ln);
     const hasDash = ln.includes("—") || ln.includes("–") || ln.includes("-");
     if (hasRate && hasDash) {
       const parts = ln.split(/\s*[—–-]\s*/);
@@ -278,14 +327,28 @@ export function parsePdfText(text: string): { watch: WatchInfo; identity: Identi
   watch.category = watchCategory(watch.classification);
 
   // Summary statement text
-  const startPrefixes = ["此心电图", "此心電圖", "This ECG", "This recording", "This is an ECG"];
-  const startKeywords = ["房颤迹象", "心房顫動跡象", "atrial fibrillation", "AFib"];
+  const startPrefixes = [
+    "此心电图",
+    "此心電圖",
+    "This ECG",
+    "This recording",
+    "This is an ECG",
+  ];
+  const startKeywords = [
+    "房颤迹象",
+    "心房顫動跡象",
+    "atrial fibrillation",
+    "AFib",
+  ];
   let startIdx: number | null = null;
   for (let k = 0; k < lines.length; k++) {
     const ln = lines[k];
     if (
       startPrefixes.some((p) => ln.startsWith(p)) ||
-      (startKeywords.some((w) => ln.includes(w)) && !ln.includes("—") && !ln.includes("–") && !ln.includes("-"))
+      (startKeywords.some((w) => ln.includes(w)) &&
+        !ln.includes("—") &&
+        !ln.includes("–") &&
+        !ln.includes("-"))
     ) {
       startIdx = k;
       break;
@@ -305,7 +368,9 @@ export function parsePdfText(text: string): { watch: WatchInfo; identity: Identi
     watch.summary_text = isAscii ? sub.join(" ") : sub.join("");
   }
 
-  const mSym = text.match(/(?:症状|症狀|Symptoms(?:\s*recorded)?|Symptom)[:：]\s*(.+)/i);
+  const mSym = text.match(
+    /(?:症状|症狀|Symptoms(?:\s*recorded)?|Symptom)[:：]\s*(.+)/i,
+  );
   if (mSym) watch.symptoms = mSym[1].trim();
 
   return { watch, identity };
@@ -326,7 +391,12 @@ export function parsePdfProperties(latinText: string): {
     const raw = creationMatch[1];
     const cm = raw.match(/D:(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/);
     if (cm) {
-      exported_at = `${cm[1]}-${cm[2]}-${cm[3]} ${cm[4]}:${cm[5]}`;
+      const zone = raw.match(/(?:Z|([+-])(\d{2})'?(\d{2})'?)[ ]*$/);
+      const offset = zone?.[1] ? `${zone[1]}${zone[2]}:${zone[3]}` : "Z";
+      const date = new Date(
+        `${cm[1]}-${cm[2]}-${cm[3]}T${cm[4]}:${cm[5]}:${cm[6]}${offset}`,
+      );
+      if (Number.isFinite(date.getTime())) exported_at = date.toISOString();
     }
   }
 

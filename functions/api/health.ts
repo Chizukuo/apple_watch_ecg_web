@@ -31,10 +31,10 @@ export const onRequestGet: PagesFunction = async () => {
       status: "ok",
       platform: "Cloudflare Pages Functions",
       engine: "apple-watch-ecg-ts",
-      version: "1.0.0",
+      version: "1.1.0",
     },
     {
       headers: CORS_HEADERS,
-    }
+    },
   );
 };

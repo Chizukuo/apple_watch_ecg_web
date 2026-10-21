@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+audit/
+test/fixtures/
+test-results/
+playwright-report/
+python-reference/

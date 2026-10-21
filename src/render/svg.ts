@@ -16,27 +16,45 @@ import {
   STRIP_SECONDS,
 } from "../core/types";
 
-export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string {
+export function renderDashboardSvg(
+  rec: Recording,
+  res: AnalysisOutput,
+  includeIdentity = false,
+  calibrated = false,
+): string {
   const rep = res.report;
-  const nRows = rec.rows.length > 0 ? Math.max(...rec.rows.map((r) => r.index)) + 1 : 3;
+  const nRows =
+    rec.rows.length > 0 ? Math.max(...rec.rows.map((r) => r.index)) + 1 : 3;
 
   const width = 1200;
-  const stripHeight = 115;
-  const stripMarginTop = 50;
-  const stripSpacing = 28;
-  const bottomHeight = 335;
+  const stripHeight = calibrated ? 130 : 115;
+  const stripMarginTop = 58;
+  const stripSpacing = calibrated ? 22 : 28;
+  const bottomHeight = 320;
   const footerHeight = 35;
   const totalHeight =
-    stripMarginTop + nRows * (stripHeight + stripSpacing) + bottomHeight + footerHeight;
+    stripMarginTop +
+    nRows * (stripHeight + stripSpacing) +
+    bottomHeight +
+    footerHeight;
 
   const leftPad = 60;
   const rightPad = 24;
   const stripWidth = width - leftPad - rightPad;
 
-  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${totalHeight}" width="100%" height="100%" style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">\n`;
+  const unitsPerMm = stripWidth / 250;
+  const physical = calibrated
+    ? `data-calibrated="true" width="${width / unitsPerMm}mm" height="${totalHeight / unitsPerMm}mm"`
+    : 'width="100%" height="100%"';
+  let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${totalHeight}" ${physical} style="background:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">\n`;
 
   // Defs: Arrowheads, clip paths, and patterns
   svg += `  <defs>\n`;
+  if (calibrated) {
+    const u = unitsPerMm;
+    svg += `<pattern id="medical-minor" width="${u}" height="${u}" patternUnits="userSpaceOnUse"><path d="M ${u} 0 L 0 0 0 ${u}" fill="none" stroke="#f8d8d8" stroke-width="0.3"/></pattern>`;
+    svg += `<pattern id="medical-major" width="${5 * u}" height="${5 * u}" patternUnits="userSpaceOnUse"><rect width="${5 * u}" height="${5 * u}" fill="url(#medical-minor)"/><path d="M ${5 * u} 0 L 0 0 0 ${5 * u}" fill="none" stroke="#e9aaaa" stroke-width="0.6"/></pattern>`;
+  }
   for (let k = 0; k < nRows; k++) {
     svg += `    <clipPath id="strip-clip-${k}"><rect x="0" y="0" width="${stripWidth}" height="${stripHeight}"/></clipPath>\n`;
   }
@@ -45,7 +63,7 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
   // 1. Header & Title
   const w = rep.watch;
   const titleParts = [
-    rec.identity?.name || "",
+    includeIdentity ? rec.identity?.name || "" : "",
     rep.record_id,
     w.recorded_at || "",
     w.classification || "",
@@ -55,11 +73,10 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
   const titleStr = titleParts.filter(Boolean).join("  ");
 
   svg += `  <!-- 1. Header Title & Legend -->\n`;
-  svg += `  <text x="${leftPad}" y="28" font-size="13" font-weight="700" fill="#0f172a">${escapeXml(titleStr)}</text>\n`;
+  svg += `  <text x="${leftPad}" y="20" font-size="13" font-weight="700" fill="#0f172a">${escapeXml(titleStr)}</text>\n`;
 
   // Top Right Legend
-  const legendX = width - rightPad;
-  svg += `  <g transform="translate(${legendX - 450}, 16)" font-size="11" fill="#475569">\n`;
+  svg += `  <g transform="translate(${leftPad}, 32)" font-size="11" fill="#475569">\n`;
   svg += `    <circle cx="0" cy="8" r="4" fill="#1565c0"/><text x="8" y="11">正常</text>\n`;
   svg += `    <polygon points="52,4 57,13 47,13" fill="#ef6c00"/><text x="61" y="11">提前同形</text>\n`;
   svg += `    <text x="130" y="13" font-size="12" font-weight="800" fill="#c62828">✕</text><text x="142" y="11">提前异形</text>\n`;
@@ -96,22 +113,27 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
     }
 
     // Symmetrical / safe voltage bounds matching medical strip scaling
-    const vMax = Math.max(1.5, Math.ceil(rowMaxV * 2) / 2);
-    const vMin = Math.min(-0.8, Math.floor(rowMinV * 2) / 2);
+    const vMax = calibrated ? 1.5 : Math.max(1.5, Math.ceil(rowMaxV * 2) / 2);
+    const vMin = calibrated
+      ? vMax - stripHeight / (10 * unitsPerMm)
+      : Math.min(-0.8, Math.floor(rowMinV * 2) / 2);
     const vSpan = vMax - vMin;
 
-    const mapStripY = (v: number) => stripHeight - ((v - vMin) / vSpan) * stripHeight;
+    const mapStripY = (v: number) =>
+      stripHeight - ((v - vMin) / vSpan) * stripHeight;
     const mapStripX = (t: number) => ((t - t0) / STRIP_SECONDS) * stripWidth;
 
     svg += `  <!-- Strip ${k + 1} (${t0}s - ${t1}s) -->\n`;
     svg += `  <g transform="translate(${leftPad}, ${stripY})">\n`;
     svg += `    <!-- Background Frame -->\n`;
-    svg += `    <rect width="${stripWidth}" height="${stripHeight}" fill="#ffffff" stroke="#cbd5e1" stroke-width="0.8"/>\n`;
+    svg += `    <rect width="${stripWidth}" height="${stripHeight}" fill="${calibrated ? "url(#medical-major)" : "#ffffff"}" stroke="#cbd5e1" stroke-width="0.8"/>\n`;
 
     // Clinical Grid Lines (X-axis seconds, Y-axis voltage)
     svg += `    <!-- Grid Lines -->\n`;
     // Y-axis grid & labels
-    const yTicks = [-0.5, 0.0, 0.5, 1.0, 1.5, 2.0].filter((v) => v >= vMin && v <= vMax);
+    const yTicks = [-0.5, 0.0, 0.5, 1.0, 1.5, 2.0].filter(
+      (v) => v >= vMin && v <= vMax,
+    );
     for (const vTick of yTicks) {
       const yPos = mapStripY(vTick);
       const isZero = Math.abs(vTick) < 0.001;
@@ -145,6 +167,10 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
       svg += `    <text x="${stripWidth / 2}" y="${stripHeight + 25}" text-anchor="middle" font-size="10" fill="#334155" font-weight="600">时间（s）</text>\n`;
     }
 
+    if (calibrated && k === 0)
+      svg += `<path d="M 4 ${mapStripY(0)} h ${2 * unitsPerMm} v ${-10 * unitsPerMm} h ${5 * unitsPerMm} v ${10 * unitsPerMm} h ${2 * unitsPerMm}" fill="none" stroke="#333" stroke-width="1"/><text x="${stripWidth}" y="-8" text-anchor="end" font-size="9">25 mm/s · 10 mm/mV · 1 mV 定标；按原始尺寸打印</text>`;
+    if (calibrated && (rowMaxV > vMax || rowMinV < vMin))
+      svg += `<text x="${stripWidth - 6}" y="14" text-anchor="end" font-size="9" fill="#b71c1c">部分波形超出绘图范围，完整电压见 CSV</text>`;
     // Shaded removed intervals
     for (const [ra, rb] of res.removed) {
       if (rb >= t0 && ra <= t1) {
@@ -164,7 +190,11 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
       for (let i = startIdx; i <= endIdx; i++) {
         const px = mapStripX(rec.t[i]);
         const py = mapStripY(rec.v[i]);
-        pathParts.push(i === startIdx ? `M ${px.toFixed(1)} ${py.toFixed(1)}` : ` L ${px.toFixed(1)} ${py.toFixed(1)}`);
+        pathParts.push(
+          i === startIdx
+            ? `M ${px.toFixed(1)} ${py.toFixed(1)}`
+            : ` L ${px.toFixed(1)} ${py.toFixed(1)}`,
+        );
         if (rec.clip[i] === 1) hasClipInRow = true;
       }
       if (pathParts.length > 0) {
@@ -256,14 +286,17 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
     const ylimHi = topV;
     const vSpan = ylimHi - ylimLo;
 
-    const mapTmplX = (tMs: number) => plotL + ((tMs - ttMin) / (ttMax - ttMin)) * plotW;
+    const mapTmplX = (tMs: number) =>
+      plotL + ((tMs - ttMin) / (ttMax - ttMin)) * plotW;
     const mapTmplY = (vMv: number) => plotT + ((ylimHi - vMv) / vSpan) * plotH;
 
     // Inner plot frame
     svg += `    <rect x="${plotL}" y="${plotT}" width="${plotW}" height="${plotH}" fill="#ffffff" stroke="#e2e8f0" stroke-width="0.8"/>\n`;
 
     // Horizontal Voltage Ticks & Grid
-    const tmplYTicks = [-0.5, 0.0, 0.5, 1.0, 1.5].filter((v) => v >= ylimLo && v <= ylimHi);
+    const tmplYTicks = [-0.5, 0.0, 0.5, 1.0, 1.5].filter(
+      (v) => v >= ylimLo && v <= ylimHi,
+    );
     for (const vTick of tmplYTicks) {
       const yPos = mapTmplY(vTick);
       const isZero = Math.abs(vTick) < 0.001;
@@ -294,7 +327,10 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
         const tMs = ((c - R) / fs) * 1000;
         const x = mapTmplX(tMs);
         const y = mapTmplY(beatRow[c] - m.base);
-        bPath += c === 0 ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+        bPath +=
+          c === 0
+            ? `M ${x.toFixed(1)} ${y.toFixed(1)}`
+            : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
       }
       svg += `    <path d="${bPath}" fill="none" stroke="#f2c4c4" stroke-width="0.5" opacity="0.8"/>\n`;
     }
@@ -305,7 +341,10 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
       const tMs = ((c - R) / fs) * 1000;
       const x = mapTmplX(tMs);
       const y = mapTmplY(smSub[c]);
-      tmplPath += c === 0 ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+      tmplPath +=
+        c === 0
+          ? `M ${x.toFixed(1)} ${y.toFixed(1)}`
+          : ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
     }
     svg += `    <path d="${tmplPath}" fill="none" stroke="#c62828" stroke-width="2.0" stroke-linejoin="round"/>\n`;
 
@@ -343,7 +382,9 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
       const pX = mapTmplX(((m.P - R) / fs) * 1000);
       const pY = mapTmplY(smSub[m.P]);
       const pTargetY = mapTmplY(smSub[m.P] + 0.3);
-      const pTxt = `P ${mo.p_amp_mv !== null ? mo.p_amp_mv.toFixed(2) : "—"} mV` + (m.p_ok ? "" : "（不可测）");
+      const pTxt =
+        `P ${mo.p_amp_mv !== null ? mo.p_amp_mv.toFixed(2) : "—"} mV` +
+        (m.p_ok ? "" : "（不可测）");
       svg += `    <line x1="${pX.toFixed(1)}" y1="${pY.toFixed(1)}" x2="${pX.toFixed(1)}" y2="${(pTargetY + 4).toFixed(1)}" stroke="#555555" stroke-width="0.6"/>\n`;
       svg += `    <text x="${pX.toFixed(1)}" y="${pTargetY.toFixed(1)}" text-anchor="middle" font-size="8" fill="#334155">${pTxt}</text>\n`;
     }
@@ -385,7 +426,12 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
       const onX = mapTmplX(((m.on - R) / fs) * 1000);
       const jX = mapTmplX(((m.J - R) / fs) * 1000);
       const calQrsY = mapTmplY(lo - 0.15);
-      const qrsMs = mo?.qrs_ms != null ? mo.qrs_ms.toFixed(0) : (m.qrs != null ? m.qrs.toFixed(0) : "—");
+      const qrsMs =
+        mo?.qrs_ms != null
+          ? mo.qrs_ms.toFixed(0)
+          : m.qrs != null
+            ? m.qrs.toFixed(0)
+            : "—";
       svg += `    <!-- QRS Caliper <-> -->\n`;
       svg += `    <line x1="${onX.toFixed(1)}" y1="${calQrsY.toFixed(1)}" x2="${jX.toFixed(1)}" y2="${calQrsY.toFixed(1)}" stroke="#1565c0" stroke-width="1.2"/>\n`;
       svg += `    <polygon points="${onX.toFixed(1)},${calQrsY.toFixed(1)} ${(onX + 4).toFixed(1)},${(calQrsY - 2.5).toFixed(1)} ${(onX + 4).toFixed(1)},${(calQrsY + 2.5).toFixed(1)}" fill="#1565c0"/>\n`;
@@ -397,7 +443,12 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
         const tendX = mapTmplX(((m.Tend - R) / fs) * 1000);
         const calQtY = mapTmplY(lo - 0.45);
         const qtReliable = mo?.qt_reliable ?? true;
-        const qtMs = mo?.qt_ms != null ? mo.qt_ms.toFixed(0) : (m.qt != null ? m.qt.toFixed(0) : "—");
+        const qtMs =
+          mo?.qt_ms != null
+            ? mo.qt_ms.toFixed(0)
+            : m.qt != null
+              ? m.qt.toFixed(0)
+              : "—";
         svg += `    <!-- QT Caliper <-> -->\n`;
         svg += `    <line x1="${onX.toFixed(1)}" y1="${calQtY.toFixed(1)}" x2="${tendX.toFixed(1)}" y2="${calQtY.toFixed(1)}" stroke="#2e7d32" stroke-width="1.2"/>\n`;
         svg += `    <polygon points="${onX.toFixed(1)},${calQtY.toFixed(1)} ${(onX + 4).toFixed(1)},${(calQtY - 2.5).toFixed(1)} ${(onX + 4).toFixed(1)},${(calQtY + 2.5).toFixed(1)}" fill="#2e7d32"/>\n`;
@@ -435,7 +486,10 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
   }
   svg += `      <text y="48">${qtcLine}  PR ${mo?.pr_ms ? `${mo.pr_ms} ms` : "不可测"}</text>\n`;
 
-  const alertNames = alerts.length > 0 ? alerts.map((a) => ALERT_NAMES[a.code] || a.code).join("、") : "无";
+  const alertNames =
+    alerts.length > 0
+      ? alerts.map((a) => ALERT_NAMES[a.code] || a.code).join("、")
+      : "无";
   svg += `      <text y="64" font-weight="${alerts.length > 0 ? "700" : "400"}">形态提醒：${escapeXml(alertNames)}</text>\n`;
   svg += `    </g>\n`;
 
@@ -489,7 +543,6 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
   svg += `      <text x="-32" y="${pBoxSize / 2}" text-anchor="middle" font-size="8.5" fill="#334155" font-weight="600" transform="rotate(-90, -32, ${pBoxSize / 2})">NN<tspan dy="2" font-size="7">n+1</tspan><tspan dy="-2">（ms）</tspan></text>\n`;
   svg += `    </g>\n`;
 
-
   // Bottom Alert Pill Badge
   const alertY = bottomHeight - 34;
   if (alerts.length > 0) {
@@ -500,16 +553,18 @@ export function renderDashboardSvg(rec: Recording, res: AnalysisOutput): string 
     svg += `    <text x="20" y="${alertY + 17}" font-size="9.5" font-weight="700" fill="${textColor}">提醒：${escapeXml(alertNames)}</text>\n`;
   } else {
     svg += `    <rect x="12" y="${alertY}" width="${rightBottomW - 24}" height="26" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>\n`;
-    svg += `    <text x="20" y="${alertY + 17}" font-size="9.5" font-weight="600" fill="#15803d">✓ 测量指标均在 AHA/ESC 正常生理范围内</text>\n`;
+    svg += `    <text x="20" y="${alertY + 17}" font-size="9.5" font-weight="600" fill="#15803d">未触发形态提醒；未评估项目请查看报告</text>\n`;
   }
 
   svg += `  </g>\n\n`;
 
   // 4. Footer Disclaimer & First Clinical Flag
-  let footer = "由 Apple Watch 导出文件还原，仅供个人记录与对比，非医疗诊断。完整提示见同名 _report.json";
+  let footer =
+    "由 Apple Watch 导出文件还原，仅供个人记录与对比，非医疗诊断。完整提示见同名 _report.json";
   if (rep.flags && rep.flags.length > 0) {
     const first = rep.flags[0];
-    footer += "。首条提示：" + (first.length <= 70 ? first : first.slice(0, 69) + "…");
+    footer +=
+      "。首条提示：" + (first.length <= 70 ? first : first.slice(0, 69) + "…");
   }
 
   svg += `  <!-- 4. Footer -->\n`;

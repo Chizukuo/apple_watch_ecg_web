@@ -5,7 +5,10 @@ import { onRequestPost } from "../functions/api/analyze";
 
 describe("API endpoint /api/analyze", () => {
   const localPdf = path.resolve(__dirname, "fixtures/synthetic_demo.pdf");
-  const parentPdf = path.resolve(__dirname, "../../apple_watch_ecg/examples/synthetic_demo.pdf");
+  const parentPdf = path.resolve(
+    __dirname,
+    "../../apple_watch_ecg/examples/synthetic_demo.pdf",
+  );
   const pdfPath = fs.existsSync(localPdf) ? localPdf : parentPdf;
 
   it("handles direct binary POST returning vector SVG", async () => {

@@ -7,15 +7,47 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            node: 22
+          - os: windows-latest
+            node: 24
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node }}
           cache: npm
+      - uses: actions/checkout@v4
+        with:
+          repository: Chizukuo/apple_watch_ecg
+          ref: a7262bdbb271fd51960adf08004362885b3bc939
+          path: python-reference
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
       - run: npm ci
+      - run: python -m pip install -r python-reference/requirements.txt pytest requests
+      - name: Formatting
+        run: npm run format:check
       - name: Type check
         run: npm run build
       - name: Run tests
         run: npm test
+      - name: Independent Python reference tests
+        run: python -m pytest python-reference/tests -q
+      - name: HTTP numerical and behavioral parity
+        run: npm run test:integration
+        env:
+          APPLE_WATCH_ECG_PY_DIR: ${{ github.workspace }}/python-reference
+      - name: Install browser
+        if: runner.os == 'Linux'
+        run: npx playwright install --with-deps chromium
+      - name: Browser workflow and exports
+        if: runner.os == 'Linux'
+        run: npm run test:e2e
+      - name: Dependency audit
+        run: npm audit --audit-level=moderate
